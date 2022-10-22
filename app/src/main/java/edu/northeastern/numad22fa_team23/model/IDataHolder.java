@@ -8,8 +8,9 @@ import retrofit2.http.Path;
 
 public interface IDataHolder {
 
-    @GET("us/{zipCode}")
-    Call<List<Responses>> getResponse(@Path("zipCode") String zipCode);
+    @GET("{country}/{zipCode}/{city}")
+    Call<Responses> getResponse(@Path("country") String country,
+            @Path("zipCode") String zipCode, @Path("city") String city);
 
     @GET("us/90210")
     Call<Responses>  getPostModels();

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import edu.northeastern.numad22fa_team23.model.IDataHolder;
-import edu.northeastern.numad22fa_team23.model.PostModel_demo;
 import edu.northeastern.numad22fa_team23.model.Responses;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,13 +34,13 @@ public class AtYourService extends AppCompatActivity {
                 .build();
 
         api = retrofit.create(IDataHolder.class);
-        getPosts();
+        getResponse();
     }
 
 
     private void getResponse() {
-//        Call<List<Response>> call = api.getResponse("90210");
-        Call<Responses> call = api.getPostModels();
+        Call<Responses> call = api.getResponse("us","ma", "boston");
+
         call.enqueue(new Callback<Responses>() {
 
             @Override
@@ -60,7 +59,7 @@ public class AtYourService extends AppCompatActivity {
                 }
 
                  */
-                System.out.println(res.getPostCode() + " " + res.getCountry());
+                System.out.println(res.getAbb() + " " + res.getCountry());
             }
 
             @Override
@@ -70,31 +69,31 @@ public class AtYourService extends AppCompatActivity {
         });
     }
 
-    private void getResponses() {
-//        Call<List<Response>> call = api.getResponse("90210");
-        Call<List<PostModel_demo>> call = api.getPost();
-        call.enqueue(new Callback<List<PostModel_demo>>() {
-            @Override
-            public void onResponse(Call<List<PostModel_demo>> call, retrofit2.Response<List<PostModel_demo>> response) {
-
-                if(!response.isSuccessful()){
-                    System.out.println("Call failed!" + response.code());
-                    return;
-                }
-                List<PostModel_demo> res = response.body();
-                for(PostModel_demo i : res) {
-                    StringBuffer str = new StringBuffer();
-                    str.append(i.getId());
-                    System.out.println(str);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<PostModel_demo>> call, Throwable t) {
-                System.out.println("error");
-            }
-        });
-    }
+//    private void getResponses() {
+////        Call<List<Response>> call = api.getResponse("90210");
+//        Call<List<PostModel_demo>> call = api.getPost();
+//        call.enqueue(new Callback<List<PostModel_demo>>() {
+//            @Override
+//            public void onResponse(Call<List<PostModel_demo>> call, retrofit2.Response<List<PostModel_demo>> response) {
+//
+//                if(!response.isSuccessful()){
+//                    System.out.println("Call failed!" + response.code());
+//                    return;
+//                }
+//                List<PostModel_demo> res = response.body();
+//                for(PostModel_demo i : res) {
+//                    StringBuffer str = new StringBuffer();
+//                    str.append(i.getId());
+//                    System.out.println(str);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<PostModel_demo>> call, Throwable t) {
+//                System.out.println("error");
+//            }
+//        });
+//    }
 
     // Get requests Example
     private void getPosts(){

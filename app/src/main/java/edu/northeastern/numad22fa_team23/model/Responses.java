@@ -2,9 +2,6 @@ package edu.northeastern.numad22fa_team23.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.List;
 
 public class Responses {
@@ -21,6 +18,47 @@ public class Responses {
     public class Places {
         @SerializedName("place name")
         private String placename;
+
+        public String getPlacename() {
+            return placename;
+        }
+
+        public void setPlacename(String placename) {
+            this.placename = placename;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public String getSa() {
+            return sa;
+        }
+
+        public void setSa(String sa) {
+            this.sa = sa;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
         private String longitude;
         private String state;
         @SerializedName("state abbreviation")
