@@ -5,7 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.northeastern.numad22fa_team23.model.IDataHolder;
@@ -20,11 +23,16 @@ public class AtYourService extends AppCompatActivity {
     private static final String TAG = "RetrofitActivity";
     private Retrofit retrofit;
     private IDataHolder api;
+    private List<Responses.Places> place;
+    PlaceServiceAdapter adapter;
+    PlaceServiceAdapter.ClickListener listener;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_at_your_service);
+        place = new ArrayList<>();
 
 
         retrofit = new Retrofit.Builder()
@@ -34,8 +42,49 @@ public class AtYourService extends AppCompatActivity {
                 .build();
 
         api = retrofit.create(IDataHolder.class);
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        listener = new PlaceServiceAdapter.ClickListener() {
+            @Override
+            public void click(int index){
+            }
+        };
         getResponse();
+
+
+
+        /*
+        adapter = new PlaceServiceAdapter(place, getApplication(),listener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AtYourService.this));
+
+         */
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+    }
+
+    // Sample data for RecyclerView
+    /*
+    private List<Responses.Places> getData()
+    {
+        List<Responses.Places> list = new ArrayList<>();
+        list.add(new examData("First Exam",
+                "May 23, 2015",
+                "Best Of Luck"));
+        list.add(new examData("Second Exam",
+                "June 09, 2015",
+                "b of l"));
+        list.add(new examData("My Test Exam",
+                "April 27, 2017",
+                "This is testing exam .."));
+
+        return list;
+    }
+
+     */
 
 
     private void getResponse() {
@@ -51,14 +100,10 @@ public class AtYourService extends AppCompatActivity {
                     return;
                 }
                 Responses res = response.body();
-                /*
-                for(Responses i : res) {
-                    StringBuffer str = new StringBuffer();
-                    str.append(i.getPlace());
-                    System.out.println(str);
-                }
-
-                 */
+                place = res.getPlace();
+                adapter = new PlaceServiceAdapter(place, getApplication(),listener);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(AtYourService.this));
                 System.out.println(res.getAbb() + " " + res.getCountry());
             }
 
@@ -67,6 +112,7 @@ public class AtYourService extends AppCompatActivity {
                 System.out.println("error");
             }
         });
+        //return place;
     }
 
 //    private void getResponses() {
