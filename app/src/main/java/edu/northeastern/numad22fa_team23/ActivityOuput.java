@@ -29,15 +29,12 @@ public class ActivityOuput extends AppCompatActivity {
     PlaceServiceAdapter adapter;
     PlaceServiceAdapter.ClickListener listener;
     RecyclerView recyclerView;
-//    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
-
-//        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-//        progressBar.setVisibility(View.VISIBLE);
 
         Intent intent = getIntent();
         Bundle data = intent.getExtras();
