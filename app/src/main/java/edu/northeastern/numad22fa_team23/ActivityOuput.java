@@ -86,7 +86,6 @@ public class ActivityOuput extends AppCompatActivity {
             public void onResponse(Call<Responses> call, retrofit2.Response<Responses> response) {
 
                 if (!response.isSuccessful()) {
-//                    System.out.println("Call failed!" + response.code());
                     Toast.makeText(ActivityOuput.this, "Invailid input!", Toast.LENGTH_LONG).show();
                     return;
                 }
