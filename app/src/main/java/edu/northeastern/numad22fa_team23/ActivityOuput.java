@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -88,7 +89,8 @@ public class ActivityOuput extends AppCompatActivity {
             public void onResponse(Call<Responses> call, retrofit2.Response<Responses> response) {
 
                 if (!response.isSuccessful()) {
-                    System.out.println("Call failed!" + response.code());
+//                    System.out.println("Call failed!" + response.code());
+                    Toast.makeText(ActivityOuput.this, "Invailid input!", Toast.LENGTH_LONG).show();
                     return;
                 }
 //                progressBar.setVisibility(View.GONE);
@@ -120,7 +122,9 @@ public class ActivityOuput extends AppCompatActivity {
             public void onResponse(Call<Responses> call, retrofit2.Response<Responses> response) {
 
                 if (!response.isSuccessful()) {
-                    System.out.println("Call failed!" + response.code());
+
+                    Toast.makeText(ActivityOuput.this, "Invailid input!", Toast.LENGTH_LONG).show();
+
                     return;
                 }
 //                progressBar.setVisibility(View.GONE);

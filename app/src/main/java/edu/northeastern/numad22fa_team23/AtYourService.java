@@ -98,31 +98,30 @@ public class AtYourService extends AppCompatActivity {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
+                        if (citySearch.isChecked()) {
+                            Bundle b = new Bundle();
+
+                            b.putInt("flag", 0);
+                            b.putString("state", inputForCity.get(0).getText().toString());
+                            b.putString("city", inputForCity.get(1).getText().toString());
+
+                            Intent intent = new Intent(AtYourService.this, ActivityOuput.class);
+
+                            intent.putExtras(b);
+                            startActivity(intent);
+                        } else if (postCodeSearch.isChecked()){
+                            Bundle b = new Bundle();
+
+                            b.putInt("flag", 1);
+                            b.putString("postCode", inputForPostCode.get(0).getText().toString());
+
+                            Intent intent = new Intent(AtYourService.this, ActivityOuput.class);
+
+                            intent.putExtras(b);
+                            startActivity(intent);
+                        }
                     }
-                }, 4000);
-
-                if (citySearch.isChecked()) {
-                    Bundle b = new Bundle();
-
-                    b.putInt("flag", 0);
-                    b.putString("state", inputForCity.get(0).getText().toString());
-                    b.putString("city", inputForCity.get(1).getText().toString());
-
-                    Intent intent = new Intent(AtYourService.this, ActivityOuput.class);
-
-                    intent.putExtras(b);
-                    startActivity(intent);
-                } else if (postCodeSearch.isChecked()){
-                    Bundle b = new Bundle();
-
-                    b.putInt("flag", 1);
-                    b.putString("postCode", inputForPostCode.get(0).getText().toString());
-
-                    Intent intent = new Intent(AtYourService.this, ActivityOuput.class);
-
-                    intent.putExtras(b);
-                    startActivity(intent);
-                }
+                }, 3000);
             }
         });
 

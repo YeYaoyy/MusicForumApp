@@ -48,6 +48,20 @@ public class PlaceServiceAdapter extends RecyclerView.Adapter<ServiceViewHolder>
         viewHolder.state.setText(list.get(position).getState());
         viewHolder.sa.setText(list.get(position).getSa());
         viewHolder.latitude.setText(list.get(position).getLatitude());
+        viewHolder.postcode.setText(list.get(position).getPostcode());
+        if(list.get(position).getPostcode() == null){
+            viewHolder.postcode.setVisibility(View.GONE);
+            viewHolder.postcodeBtn.setVisibility(View.GONE);
+            viewHolder.postcodeName.setVisibility(View.GONE);
+        }
+        if(list.get(position).getState() == null){
+            viewHolder.sa.setVisibility(View.GONE);
+            viewHolder.saBtn.setVisibility(View.GONE);
+            viewHolder.saName.setVisibility(View.GONE);
+            viewHolder.state.setVisibility(View.GONE);
+            viewHolder.stateBtn.setVisibility(View.GONE);
+            viewHolder.stateName.setVisibility(View.GONE);
+        }
         viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)

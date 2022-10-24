@@ -184,4 +184,42 @@
         android:layout_toEndOf="@+id/latitude"
         android:gravity="center"
         android:textSize="16sp" />
+
+
+    <ImageView
+        android:id="@+id/postcodeIcon"
+        android:src="@drawable/ic_action_name"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/latitude"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="7dp" />
+
+    <TextView
+        android:id="@+id/postcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/latitude"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/postcodeIcon"
+        android:gravity="center"
+        android:text="postcode:"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/postcodeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/latitudeValue"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/postcode"
+        android:gravity="center"
+        android:textSize="16sp" />
+
+
+
 </RelativeLayout>

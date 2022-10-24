@@ -59,6 +59,18 @@ public class Responses {
             this.latitude = latitude;
         }
 
+        public String getPostcode() {
+            return postCode;
+        }
+
+        public void setPostcode(String latitude) {
+            this.postCode = postCode;
+        }
+
+        //corresponding
+        @SerializedName("post code")
+        private String postCode;
+
         private String longitude;
         private String state;
         @SerializedName("state abbreviation")
