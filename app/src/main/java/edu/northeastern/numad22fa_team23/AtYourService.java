@@ -125,14 +125,6 @@ public class AtYourService extends AppCompatActivity {
             }
         });
 
-//        getResponseForCity();
-
-        /*
-        adapter = new PlaceServiceAdapter(place, getApplication(),listener);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(AtYourService.this));
-
-         */
     }
 
     public void inputCity() {
@@ -149,7 +141,7 @@ public class AtYourService extends AppCompatActivity {
             editTextLayout.addView(editText);
             inputForCity.add(editText);
         }
-//        addLineSeperator();
+
     }
 
     public void inputPostCode() {
@@ -163,19 +155,9 @@ public class AtYourService extends AppCompatActivity {
         setEditTextAttributes(editText);
         editTextLayout.addView(editText);
         inputForPostCode.add(editText);
-//        addLineSeperator();
+
     }
 
-//    private void addLineSeperator() {
-//        LinearLayout lineLayout = new LinearLayout(this);
-//        lineLayout.setBackgroundColor(Color.GRAY);
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                2);
-//        params.setMargins(0, convertDpToPixel(10), 0, convertDpToPixel(10));
-//        lineLayout.setLayoutParams(params);
-//        linearLayout.addView(lineLayout);
-//    }
 
     private void setEditTextAttributes(EditText editText) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -202,91 +184,5 @@ public class AtYourService extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    // Sample data for RecyclerView
-    /*
-    private List<Responses.Places> getData()
-    {
-        List<Responses.Places> list = new ArrayList<>();
-        list.add(new examData("First Exam",
-                "May 23, 2015",
-                "Best Of Luck"));
-        list.add(new examData("Second Exam",
-                "June 09, 2015",
-                "b of l"));
-        list.add(new examData("My Test Exam",
-                "April 27, 2017",
-                "This is testing exam .."));
-
-        return list;
-    }
-
-     */
-
-
-//    private void getResponses() {
-////        Call<List<Response>> call = api.getResponse("90210");
-//        Call<List<PostModel_demo>> call = api.getPost();
-//        call.enqueue(new Callback<List<PostModel_demo>>() {
-//            @Override
-//            public void onResponse(Call<List<PostModel_demo>> call, retrofit2.Response<List<PostModel_demo>> response) {
-//
-//                if(!response.isSuccessful()){
-//                    System.out.println("Call failed!" + response.code());
-//                    return;
-//                }
-//                List<PostModel_demo> res = response.body();
-//                for(PostModel_demo i : res) {
-//                    StringBuffer str = new StringBuffer();
-//                    str.append(i.getId());
-//                    System.out.println(str);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<PostModel_demo>> call, Throwable t) {
-//                System.out.println("error");
-//            }
-//        });
-//    }
-
-    /*
-    // Get requests Example
-    private void getPosts(){
-        // to execute the call
-        Call<Responses> call = api.getPostModels();
-        //call.execute() runs on the current thread, which is main at the momement. This will crash
-        // use Retrofit's method enque. This will automaically push the network call to background thread
-        call.enqueue(new Callback<Responses>() {
-            @Override
-            public void onResponse(Call<Responses> call, Response<Responses> response) {
-                //This gets called when atleast the call reaches a server and there was a response BUT 404 or any legitimate error code from the server, also calls this
-                // check response code is between 200-300 and API was found
-                //JSONArray js = Json.parseArray(response.getString().toString());
-                if(!response.isSuccessful()){
-                    Log.d(TAG, "Call failed!" + response.code());
-                    return;
-                }
-
-                Log.d(TAG, "Call Successed!");
-                Responses postModels = response.body();
-//                for(Responses post : postModels){
-//                    StringBuffer  str = new StringBuffer();
-//                    str.append(post.getAbb());
-//                    Log.d(TAG, str.toString());
-//
-//
-//                }
-                System.out.println(postModels.getPostCode() + " " + postModels.getCountry());
-            }
-
-            @Override
-            public void onFailure(Call<Responses> call, Throwable t) {
-                // this gets called when url is wrong and therefore calls can't be made OR processing the request goes wrong.
-                Log.d(TAG, "Call failed!" + t.getMessage());
-            }
-        });
-    }
-
-     */
 
 }
