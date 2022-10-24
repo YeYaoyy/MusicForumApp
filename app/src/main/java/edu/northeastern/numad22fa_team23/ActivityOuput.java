@@ -89,7 +89,6 @@ public class ActivityOuput extends AppCompatActivity {
                     Toast.makeText(ActivityOuput.this, "Invailid input!", Toast.LENGTH_LONG).show();
                     return;
                 }
-//                progressBar.setVisibility(View.GONE);
                 Responses res = response.body();
                 place = res.getPlace();
                 adapter = new PlaceServiceAdapter(place, getApplication(), listener);
