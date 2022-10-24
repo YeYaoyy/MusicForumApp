@@ -1,7 +1,21 @@
 package edu.northeastern.numad22fa_team23;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,37 +34,99 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AtYourService extends AppCompatActivity {
-    private static final String TAG = "RetrofitActivity";
-    private Retrofit retrofit;
-    private IDataHolder api;
-    private List<Responses.Places> place;
-    PlaceServiceAdapter adapter;
-    PlaceServiceAdapter.ClickListener listener;
-    RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private CheckBox citySearch;
+    private CheckBox postCodeSearch;
+
+    List<EditText> inputForCity = new ArrayList<>();
+    List<EditText> inputForPostCode = new ArrayList<>();
+
+    LinearLayout linearLayout;
+    Button confirmed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_at_your_service);
-        place = new ArrayList<>();
+        setContentView(R.layout.layout_at_your_service);
 
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.zippopotam.us/")
-//                .baseUrl("https://jsonplaceholder.typicode.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        citySearch = findViewById(R.id.search_by_city);
+        postCodeSearch = findViewById(R.id.search_by_post_code);
+        linearLayout = findViewById(R.id.linear_layout);
+        confirmed = findViewById(R.id.confirmChoice);
 
-        api = retrofit.create(IDataHolder.class);
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        listener = new PlaceServiceAdapter.ClickListener() {
+        citySearch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void click(int index){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    inputCity();
+                    postCodeSearch.setChecked(false);
+                    int n = inputForPostCode.size();
+                    if (n != 0) {
+                        inputForPostCode.get(0).setVisibility(View.GONE);
+                    }
+                }
             }
-        };
-        getResponse();
+        });
 
+        postCodeSearch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    inputPostCode();
+                    citySearch.setChecked(false);
+                    citySearch.setChecked(false);
+                    int n = inputForCity.size();
+                    if (n != 0) {
+                        inputForCity.get(0).setVisibility(View.GONE);
+                        inputForCity.get(1).setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
+        confirmed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }, 4000);
+
+                if (citySearch.isChecked()) {
+                    Bundle b = new Bundle();
+
+                    b.putInt("flag", 0);
+                    b.putString("state", inputForCity.get(0).getText().toString());
+                    b.putString("city", inputForCity.get(1).getText().toString());
+
+                    Intent intent = new Intent(AtYourService.this, ActivityOuput.class);
+
+                    intent.putExtras(b);
+                    startActivity(intent);
+                } else if (postCodeSearch.isChecked()){
+                    Bundle b = new Bundle();
+
+                    b.putInt("flag", 1);
+                    b.putString("postCode", inputForPostCode.get(0).getText().toString());
+
+                    Intent intent = new Intent(AtYourService.this, ActivityOuput.class);
+
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
+            }
+        });
+
+//        getResponseForCity();
 
         /*
         adapter = new PlaceServiceAdapter(place, getApplication(),listener);
@@ -60,9 +136,70 @@ public class AtYourService extends AppCompatActivity {
          */
     }
 
+    public void inputCity() {
+        inputForCity = new ArrayList<>();
+        LinearLayout editTextLayout = new LinearLayout(this);
+        editTextLayout.setOrientation(LinearLayout.VERTICAL);
+        String[] hint = new String[]{"State:", "City:"};
+        linearLayout.addView(editTextLayout);
+
+        for (int i = 0; i <= 1; i++) {
+            EditText editText = new EditText(this);
+            editText.setHint(hint[i]);
+            setEditTextAttributes(editText);
+            editTextLayout.addView(editText);
+            inputForCity.add(editText);
+        }
+//        addLineSeperator();
+    }
+
+    public void inputPostCode() {
+        inputForPostCode = new ArrayList<>();
+        LinearLayout editTextLayout = new LinearLayout(this);
+        editTextLayout.setOrientation(LinearLayout.VERTICAL);
+
+        linearLayout.addView(editTextLayout);
+        EditText editText = new EditText(this);
+        editText.setHint("PostCode:");
+        setEditTextAttributes(editText);
+        editTextLayout.addView(editText);
+        inputForPostCode.add(editText);
+//        addLineSeperator();
+    }
+
+//    private void addLineSeperator() {
+//        LinearLayout lineLayout = new LinearLayout(this);
+//        lineLayout.setBackgroundColor(Color.GRAY);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                2);
+//        params.setMargins(0, convertDpToPixel(10), 0, convertDpToPixel(10));
+//        lineLayout.setLayoutParams(params);
+//        linearLayout.addView(lineLayout);
+//    }
+
+    private void setEditTextAttributes(EditText editText) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        params.setMargins(convertDpToPixel(16),
+                convertDpToPixel(16),
+                convertDpToPixel(16),
+                0
+        );
+
+        editText.setLayoutParams(params);
+    }
+
+    private int convertDpToPixel(float dp) {
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return Math.round(px);
+    }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
     }
 
@@ -86,34 +223,6 @@ public class AtYourService extends AppCompatActivity {
 
      */
 
-
-    private void getResponse() {
-        Call<Responses> call = api.getResponse("us","ma", "boston");
-
-        call.enqueue(new Callback<Responses>() {
-
-            @Override
-            public void onResponse(Call<Responses> call, retrofit2.Response<Responses> response) {
-
-                if(!response.isSuccessful()){
-                    System.out.println("Call failed!" + response.code());
-                    return;
-                }
-                Responses res = response.body();
-                place = res.getPlace();
-                adapter = new PlaceServiceAdapter(place, getApplication(),listener);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(AtYourService.this));
-                System.out.println(res.getAbb() + " " + res.getCountry());
-            }
-
-            @Override
-            public void onFailure(Call<Responses> call, Throwable t) {
-                System.out.println("error");
-            }
-        });
-        //return place;
-    }
 
 //    private void getResponses() {
 ////        Call<List<Response>> call = api.getResponse("90210");
@@ -141,6 +250,7 @@ public class AtYourService extends AppCompatActivity {
 //        });
 //    }
 
+    /*
     // Get requests Example
     private void getPosts(){
         // to execute the call
@@ -177,5 +287,7 @@ public class AtYourService extends AppCompatActivity {
             }
         });
     }
+
+     */
 
 }

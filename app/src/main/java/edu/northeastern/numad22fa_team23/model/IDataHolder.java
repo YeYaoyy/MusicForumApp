@@ -6,16 +6,11 @@ import retrofit2.http.Path;
 
 public interface IDataHolder {
 
-    @GET("{country}/{zipCode}/{city}")
-    Call<Responses> getResponse(@Path("country") String country,
-            @Path("zipCode") String zipCode, @Path("city") String city);
+    @GET("us/{state}/{city}")
+    Call<Responses> getResponseForCity(
+            @Path("state") String state, @Path("city") String city);
 
-    @GET("us/90210")
-    Call<Responses>  getPostModels();
+    @GET("us/{postCode}")
+    Call<Responses>  getResponseForPostCode(@Path("postCode") String postCode);
 
-    /*
-    @GET("posts")   // "post/" is the relative Url of your api. We define base Url at a common place later
-    Call<List<PostModel_demo>>  getPost();
-
-     */
 }
