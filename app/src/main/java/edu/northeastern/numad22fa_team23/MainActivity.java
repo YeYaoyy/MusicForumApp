@@ -20,5 +20,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AtYourService.class);
             startActivity(intent);
         }
+        if (theId == R.id.stickittoem) {
+            Intent intent = new Intent(this, StickItToEm.class);
+            startActivity(intent);
+        }
     }
 }

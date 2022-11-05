@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "418005321400",
+    "project_id": "stick-it-to-em-team23",
+    "storage_bucket": "stick-it-to-em-team23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418005321400:android:aecb39d1d93f8622bb164d",
+        "android_client_info": {
+          "package_name": "numad22fa.team23"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418005321400-fmd7jd4ao52mkssgkhn6f4mja8o5a5u6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa4IwUwzcWkX_bkjIzlv05o-kDqI4OlhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418005321400-fmd7jd4ao52mkssgkhn6f4mja8o5a5u6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
