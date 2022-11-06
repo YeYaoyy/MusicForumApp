@@ -1,10 +1,17 @@
 package edu.northeastern.numad22fa_team23;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,14 +19,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import edu.northeastern.numad22fa_team23.databinding.ActivityMainBinding;
 import edu.northeastern.numad22fa_team23.databinding.LayoutStickItToEmBinding;
@@ -32,6 +49,9 @@ public class SendingMessage extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
+    private DatabaseReference mDatabase;
+    private ImageView selectedImage;
+    private String selectedUsername;
 
     LayoutStickItToEmBinding binding;
 
@@ -41,6 +61,9 @@ public class SendingMessage extends AppCompatActivity {
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        setSpinner();
 
 //        binding.selectImagebtn.setOnClickListener(new View.OnClickListener(){
 //            @Override
@@ -52,6 +75,7 @@ public class SendingMessage extends AppCompatActivity {
         binding.sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedUsername = binding.spinner.getSelectedItem().toString();
                 uploadPicture();
             }
         });
@@ -60,6 +84,7 @@ public class SendingMessage extends AppCompatActivity {
         binding.image01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedImage = binding.image01;
                 imageUri = Uri.parse("android.resource://edu.northeastern.numad22fa_team23/drawable/image01");
 //                chooseImage();
             }
@@ -68,6 +93,7 @@ public class SendingMessage extends AppCompatActivity {
         binding.image02.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedImage = binding.image02;
                 imageUri = Uri.parse("android.resource://edu.northeastern.numad22fa_team23/drawable/image02");
                // chooseImage();
             }
@@ -76,6 +102,7 @@ public class SendingMessage extends AppCompatActivity {
         binding.image03.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedImage = binding.image03;
                 imageUri = Uri.parse("android.resource://edu.northeastern.numad22fa_team23/drawable/image03");
                 //chooseImage();
             }
@@ -134,6 +161,91 @@ public class SendingMessage extends AppCompatActivity {
                 });
 
     }
+
+    private void setSpinner() {
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                HashMap<String, HashMap<String, User>> map = (HashMap<String, HashMap<String, User>>) dataSnapshot.getValue();
+//                User user = dataSnapshot.getValue(User.class);
+//                System.out.println(user.get("users"));
+                HashMap<String, User> user = map.get("users");
+                List<String> userNames = new ArrayList<>();
+
+                for (String u : user.keySet()) {
+                    userNames.add(u);
+                }
+                ArrayAdapter<String> adapter
+                        = new ArrayAdapter<>(getApplicationContext(),
+                        androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                        userNames);
+                binding.spinner.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                databaseError.toException();
+            }
+        };
+        mDatabase.addValueEventListener(postListener);
+    }
+
+    public void onSendButtonPressend(View v) {
+
+
+
+    }
+
+    public void createNotificationChannel() {
+        // This must be called early because it must be called before a notification is sent.
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Team_23_Stick_It_To_Em";
+            String description = "Team_23_Stick_It_To_Em";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("Team_23_Stick_It_To_Em_Notification", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+//    public void sendNotification(View view){
+//        // Prepare intent which is triggered if the
+//        // notification is selected
+//        Intent intent = new Intent(this, ReceiveNotificationActivity.class);
+//        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+//
+//        PendingIntent callIntent = PendingIntent.getActivity(this, (int)System.currentTimeMillis(),
+//                new Intent(this, FakeCallActivity.class), 0);
+//
+//
+//        // Build notification
+//        // Actions are just fake
+//        String channelId = getString(R.string.channel_id);
+//
+////        Notification noti = new Notification.Builder(this)   DEPRECATED
+//        Notification noti = new NotificationCompat.Builder(this,channelId)
+//
+//                .setContentTitle("New mail from " + "test@gmail.com")
+//                .setContentText("Subject").setSmallIcon(R.drawable.foo)
+//
+//                .addAction(R.drawable.foo, "Call", callIntent).setContentIntent(pIntent).build();
+////                .addAction(R.drawable.icon, "More", pIntent)
+////              .addAction(R.drawable.icon, "And more", pIntent).build();
+//
+//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        // hide the notification after its selected
+//        noti.flags |= Notification.FLAG_AUTO_CANCEL ;
+//
+//        notificationManager.notify(0, noti);
+//    }
 
 
 }

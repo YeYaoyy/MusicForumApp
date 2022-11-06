@@ -11,10 +11,12 @@
         android:id="@+id/image01"
         android:layout_width="400px"
         android:layout_height="400px"
-        android:layout_marginStart="4dp"
-        android:src="@drawable/image01"
+        android:layout_marginStart="24dp"
         android:onClick="onClick"
+        android:src="@drawable/image01"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/image02"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.31"
@@ -24,27 +26,47 @@
         android:id="@+id/image02"
         android:layout_width="400px"
         android:layout_height="400px"
+        android:layout_marginEnd="36dp"
         android:onClick="onClick"
         android:src="@drawable/image02"
-        tools:layout_editor_absoluteX="243dp"
-        tools:layout_editor_absoluteY="180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.163"
         tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/image03"
         android:layout_width="99dp"
         android:layout_height="89dp"
+        android:layout_marginTop="44dp"
         android:onClick="onClick"
         android:src="@drawable/image03"
-        tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="359dp" />
+        app:layout_constraintBottom_toTopOf="@+id/sendMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image02"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/sendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="172dp"
         android:text="send"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="499dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
