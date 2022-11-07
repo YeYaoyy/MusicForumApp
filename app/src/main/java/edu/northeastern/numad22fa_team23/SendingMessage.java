@@ -5,10 +5,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,17 +24,30 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,12 +71,16 @@ public class SendingMessage extends AppCompatActivity {
 
     LayoutStickItToEmBinding binding;
 
+    private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
+    private static String token;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        createNotificationChannel();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setSpinner();
@@ -77,6 +97,7 @@ public class SendingMessage extends AppCompatActivity {
             public void onClick(View v) {
                 selectedUsername = binding.spinner.getSelectedItem().toString();
                 uploadPicture();
+                sendMessageToDevice(v);
             }
         });
 
@@ -108,7 +129,138 @@ public class SendingMessage extends AppCompatActivity {
             }
         });
 
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            System.out.println("Fetching FCM registration token failed");
+                            return;
+                        }
 
+                        if (token == null) {
+                            // Get new FCM registration token
+                            token = task.getResult();
+                        }
+
+                        System.out.println(token);
+                        Toast.makeText(SendingMessage.this, "token: " + token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+
+    public void sendMessageToDevice(View view) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sendMessageToDevice(token);
+            }
+        }).start();
+    }
+
+    private void sendMessageToDevice(String targetToken) {
+
+        // Prepare data
+        JSONObject jPayload = new JSONObject();
+        JSONObject jNotification = new JSONObject();
+        JSONObject jdata = new JSONObject();
+        try {
+            jNotification.put("title", "Message Title from 'SEND MESSAGE TO CLIENT BUTTON'");
+            jNotification.put("body", "Message body from 'SEND MESSAGE TO CLIENT BUTTON'");
+            jNotification.put("sound", "default");
+            jNotification.put("badge", "1");
+            /*
+            // We can add more details into the notification if we want.
+            // We happen to be ignoring them for this demo.
+            jNotification.put("click_action", "OPEN_ACTIVITY_1");
+            */
+            jdata.put("title", "data title from 'SEND MESSAGE TO CLIENT BUTTON'");
+            jdata.put("content", "data content from 'SEND MESSAGE TO CLIENT BUTTON'");
+
+            /***
+             * The Notification object is now populated.
+             * Next, build the Payload that we send to the server.
+             */
+
+            // If sending to a single client
+            jPayload.put("to", targetToken); // CLIENT_REGISTRATION_TOKEN);
+
+            /*
+            // If sending to multiple clients (must be more than 1 and less than 1000)
+            JSONArray ja = new JSONArray();
+            ja.put(CLIENT_REGISTRATION_TOKEN);
+            // Add Other client tokens
+            ja.put(FirebaseInstanceId.getInstance().getToken());
+            jPayload.put("registration_ids", ja);
+            */
+
+            jPayload.put("priority", "high");
+            jPayload.put("notification", jNotification);
+            jPayload.put("data", jdata);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        final String resp = fcmHttpConnection(SERVER_KEY, jPayload);
+        postToastMessage("Status from Server: " + resp, getApplicationContext());
+
+    }
+
+    public static void postToastMessage(final String message, final Context context){
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public static String fcmHttpConnection(String serverToken, JSONObject jsonObject) {
+        try {
+
+            // Open the HTTP connection and send the payload
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", serverToken);
+            conn.setDoOutput(true);
+
+            // Send FCM message content.
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(jsonObject.toString().getBytes());
+            outputStream.close();
+
+            // Read FCM response.
+            InputStream inputStream = conn.getInputStream();
+            return convertStreamToString(inputStream);
+        } catch (IOException e) {
+            return "NULL";
+        }
+
+    }
+
+    public static String convertStreamToString(InputStream inputStream) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String len;
+            while ((len = bufferedReader.readLine()) != null) {
+                stringBuilder.append(len);
+            }
+            bufferedReader.close();
+            return stringBuilder.toString().replace(",", ",\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private void chooseImage() {
@@ -199,6 +351,20 @@ public class SendingMessage extends AppCompatActivity {
 
     }
 
+//    public static Properties getProperties(Context context)  {
+//        Properties properties = new Properties();
+//        AssetManager assetManager = context.getAssets();
+//        InputStream inputStream = null;
+//        try {
+//            inputStream = assetManager.open("firebase.properties");
+//            properties.load(inputStream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return properties;
+//    }
+
     public void createNotificationChannel() {
         // This must be called early because it must be called before a notification is sent.
         // Create the NotificationChannel, but only on API 26+ because
@@ -215,37 +381,6 @@ public class SendingMessage extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-//    public void sendNotification(View view){
-//        // Prepare intent which is triggered if the
-//        // notification is selected
-//        Intent intent = new Intent(this, ReceiveNotificationActivity.class);
-//        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-//
-//        PendingIntent callIntent = PendingIntent.getActivity(this, (int)System.currentTimeMillis(),
-//                new Intent(this, FakeCallActivity.class), 0);
-//
-//
-//        // Build notification
-//        // Actions are just fake
-//        String channelId = getString(R.string.channel_id);
-//
-////        Notification noti = new Notification.Builder(this)   DEPRECATED
-//        Notification noti = new NotificationCompat.Builder(this,channelId)
-//
-//                .setContentTitle("New mail from " + "test@gmail.com")
-//                .setContentText("Subject").setSmallIcon(R.drawable.foo)
-//
-//                .addAction(R.drawable.foo, "Call", callIntent).setContentIntent(pIntent).build();
-////                .addAction(R.drawable.icon, "More", pIntent)
-////              .addAction(R.drawable.icon, "And more", pIntent).build();
-//
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        // hide the notification after its selected
-//        noti.flags |= Notification.FLAG_AUTO_CANCEL ;
-//
-//        notificationManager.notify(0, noti);
-//    }
 
 
 }
