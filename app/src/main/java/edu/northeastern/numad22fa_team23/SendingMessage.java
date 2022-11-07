@@ -1,12 +1,12 @@
 package edu.northeastern.numad22fa_team23;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,14 +15,12 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,9 +50,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Properties;
 
-import edu.northeastern.numad22fa_team23.databinding.ActivityMainBinding;
 import edu.northeastern.numad22fa_team23.databinding.LayoutStickItToEmBinding;
 
 public class SendingMessage extends AppCompatActivity {
@@ -66,8 +63,8 @@ public class SendingMessage extends AppCompatActivity {
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
     private DatabaseReference mDatabase;
-    private ImageView selectedImage;
     private String selectedUsername;
+    private ImageView selectedImage;
 
     LayoutStickItToEmBinding binding;
 
@@ -82,15 +79,15 @@ public class SendingMessage extends AppCompatActivity {
         setContentView(binding.getRoot());
         createNotificationChannel();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        setSpinner();
-
 //        binding.selectImagebtn.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View v) {
 //                chooseImage();
 //            }
 //        });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        setSpinner();
 
         binding.sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +103,7 @@ public class SendingMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectedImage = binding.image01;
-                imageUri = Uri.parse("android.resource://edu.northeastern.numad22fa_team23/drawable/image01");
+                imageUri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.drawable.image01);
 //                chooseImage();
             }
         });
@@ -115,7 +112,7 @@ public class SendingMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectedImage = binding.image02;
-                imageUri = Uri.parse("android.resource://edu.northeastern.numad22fa_team23/drawable/image02");
+                imageUri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/drawable/image02");
                // chooseImage();
             }
         });
@@ -124,7 +121,7 @@ public class SendingMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectedImage = binding.image03;
-                imageUri = Uri.parse("android.resource://edu.northeastern.numad22fa_team23/drawable/image03");
+                imageUri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/drawable/image03");
                 //chooseImage();
             }
         });
@@ -147,7 +144,6 @@ public class SendingMessage extends AppCompatActivity {
                         Toast.makeText(SendingMessage.this, "token: " + token, Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
     }
 
@@ -345,25 +341,20 @@ public class SendingMessage extends AppCompatActivity {
         mDatabase.addValueEventListener(postListener);
     }
 
-    public void onSendButtonPressend(View v) {
 
+    public static Properties getProperties(Context context)  {
+        Properties properties = new Properties();
+        AssetManager assetManager = context.getAssets();
+        InputStream inputStream = null;
+        try {
+            inputStream = assetManager.open("firebase.properties");
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
+        return properties;
     }
-
-//    public static Properties getProperties(Context context)  {
-//        Properties properties = new Properties();
-//        AssetManager assetManager = context.getAssets();
-//        InputStream inputStream = null;
-//        try {
-//            inputStream = assetManager.open("firebase.properties");
-//            properties.load(inputStream);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return properties;
-//    }
 
     public void createNotificationChannel() {
         // This must be called early because it must be called before a notification is sent.
@@ -381,6 +372,4 @@ public class SendingMessage extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-
 }
