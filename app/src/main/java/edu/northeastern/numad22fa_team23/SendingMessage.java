@@ -161,7 +161,7 @@ public class SendingMessage extends AppCompatActivity {
                         }
 
                         System.out.println(token);
-                        Toast.makeText(SendingMessage.this, "token: " + token, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SendingMessage.this, "token: " + token, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -184,8 +184,8 @@ public class SendingMessage extends AppCompatActivity {
         JSONObject jNotification = new JSONObject();
         JSONObject jdata = new JSONObject();
         try {
-            jNotification.put("title", "Message Title from 'SEND MESSAGE TO CLIENT BUTTON'");
-            jNotification.put("body", "Message body from 'SEND MESSAGE TO CLIENT BUTTON'");
+            jNotification.put("title", "Hello!");
+            jNotification.put("body", "you receive a sticker");
             jNotification.put("sound", "default");
             jNotification.put("badge", "1");
             /*
@@ -195,6 +195,7 @@ public class SendingMessage extends AppCompatActivity {
             */
             jdata.put("title", "data title from 'SEND MESSAGE TO CLIENT BUTTON'");
             jdata.put("content", "data content from 'SEND MESSAGE TO CLIENT BUTTON'");
+            jdata.put("image_id", selectedImage.getId());
 
             /***
              * The Notification object is now populated.
@@ -223,7 +224,7 @@ public class SendingMessage extends AppCompatActivity {
 
 
         final String resp = fcmHttpConnection(SERVER_KEY, jPayload);
-        postToastMessage("Status from Server: " + resp, getApplicationContext());
+        //postToastMessage("Status from Server: " + resp, getApplicationContext());
 
     }
 
