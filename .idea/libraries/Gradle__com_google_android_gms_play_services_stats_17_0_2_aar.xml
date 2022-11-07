@@ -2,8 +2,8 @@
   <library name="Gradle: com.google.android.gms:play-services-stats:17.0.2@aar">
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/03255fbeac449eb323cf92caf70a269f/transformed/play-services-stats-17.0.2/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/701ac85a9de91c4fadf9137fa73bb27d/transformed/play-services-stats-17.0.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/701ac85a9de91c4fadf9137fa73bb27d/transformed/play-services-stats-17.0.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/701ac85a9de91c4fadf9137fa73bb27d/transformed/play-services-stats-17.0.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/701ac85a9de91c4fadf9137fa73bb27d/transformed/play-services-stats-17.0.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

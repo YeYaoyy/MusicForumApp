@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat;
 
 public class SendNotificationActivity extends AppCompatActivity {
     @Override
+
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_stick_it_to_em);
