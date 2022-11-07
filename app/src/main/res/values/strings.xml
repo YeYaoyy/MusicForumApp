@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NUMAD22Fa_Team23</string>
+    <string name="search_by_city">Search by city</string>
+    <string name="search_by_postcode">Search by post code</string>
+</resources>
