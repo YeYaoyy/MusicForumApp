@@ -49,6 +49,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -70,10 +71,13 @@ public class SendingMessage extends AppCompatActivity {
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
     private static String token;
+    private String newToken;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        String username = i.getStringExtra("username");
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -93,6 +97,21 @@ public class SendingMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectedUsername = binding.spinner.getSelectedItem().toString();
+
+                mDatabase.child("users").child(selectedUsername).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        }
+                        else {
+                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            HashMap<String, String> map = (HashMap<String, String>) task.getResult().getValue();
+                            newToken = map.get("token");
+                        }
+                    }
+                });
+
                 uploadPicture();
                 sendMessageToDevice(v);
             }
@@ -138,6 +157,7 @@ public class SendingMessage extends AppCompatActivity {
                         if (token == null) {
                             // Get new FCM registration token
                             token = task.getResult();
+                            mDatabase.child("users").child(username).child("token").setValue(token);
                         }
 
                         System.out.println(token);
@@ -152,7 +172,7 @@ public class SendingMessage extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                sendMessageToDevice(token);
+                sendMessageToDevice(newToken);
             }
         }).start();
     }
