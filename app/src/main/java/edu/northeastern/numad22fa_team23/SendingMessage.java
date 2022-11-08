@@ -72,12 +72,14 @@ public class SendingMessage extends AppCompatActivity {
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
     private static String token;
     private String newToken;
+    private String username;
+    private HashMap<String, String> map;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        String username = i.getStringExtra("username");
+        username = i.getStringExtra("username");
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -114,6 +116,9 @@ public class SendingMessage extends AppCompatActivity {
 
                 uploadPicture();
                 sendMessageToDevice(v);
+                Date now = new Date();
+                Message newMessage = new Message(username, selectedUsername, now.toString(), selectedImage.getId());
+                //mDatabase.child("users").child(selectedUsername).child("received").setValue();
             }
         });
 
@@ -156,8 +161,17 @@ public class SendingMessage extends AppCompatActivity {
 
                         if (token == null) {
                             // Get new FCM registration token
+                            User user = new User(username);
+
+
+                            //mDatabase.child("users").child(user.getUsername()).setValue(user);
                             token = task.getResult();
-                            mDatabase.child("users").child(username).child("token").setValue(token);
+                            user.setToken(token);
+
+                            //mDatabase.child("users").child(username).child("token").setValue(token);
+                            List<Message> messageList = new ArrayList<>();
+                            user.setMessageList(messageList);
+                            mDatabase.child("users").child(username).setValue(user);
                         }
 
                         System.out.println(token);
@@ -224,7 +238,7 @@ public class SendingMessage extends AppCompatActivity {
 
 
         final String resp = fcmHttpConnection(SERVER_KEY, jPayload);
-        //postToastMessage("Status from Server: " + resp, getApplicationContext());
+        postToastMessage("Status from Server: " + resp, getApplicationContext());
 
     }
 
@@ -234,7 +248,7 @@ public class SendingMessage extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             }
         });
     }

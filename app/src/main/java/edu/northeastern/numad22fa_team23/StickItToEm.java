@@ -37,9 +37,9 @@ public class StickItToEm extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User(userName.getText().toString());
+                //User user = new User(userName.getText().toString());
 
-                mDatabase.child("users").child(user.getUsername()).setValue(user);
+                //mDatabase.child("users").child(user.getUsername()).setValue(user);
                 //mDatabase.child("users").child(user.getUsername()).child("token").setValue(token);
                 Intent intent = new Intent(StickItToEm.this, SendingMessage.class);
                 intent.putExtra("username",userName.getText().toString());
