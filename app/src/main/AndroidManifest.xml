@@ -46,6 +46,8 @@
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".SendingMessage"
             android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".RecievedHistoryActivity"
+            android:configChanges="orientation|screenSize"></activity>
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />

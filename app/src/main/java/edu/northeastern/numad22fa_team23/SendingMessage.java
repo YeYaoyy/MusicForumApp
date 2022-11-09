@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -67,6 +69,7 @@ public class SendingMessage extends AppCompatActivity {
     private String selectedUsername;
     private ImageView selectedImage;
     private List<Message> savedMessageList = new ArrayList<>();
+
 
     LayoutStickItToEmBinding binding;
 
@@ -197,6 +200,28 @@ public class SendingMessage extends AppCompatActivity {
         });
 
         setSpinner();
+        binding.history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase.child("users").child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        }
+                        else {
+                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
+                            List<Message> history = new ArrayList<>();
+                            history = (List<Message>) map.get("messageList");
+                            Intent intent = new Intent(SendingMessage.this, RecievedHistoryActivity.class);
+                            intent.putExtra("history", (Serializable) history);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        });
 
     }
 
