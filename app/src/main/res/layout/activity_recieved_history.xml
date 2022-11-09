@@ -14,7 +14,7 @@
         android:layout_marginEnd="16dp"
         android:text="Stickers"
         android:minWidth="50dp"
-        app:layout_constraintBottom_toTopOf="@id/receivedHistory"
+        app:layout_constraintBottom_toTopOf="@id/history"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fromUser"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="16dp"
         android:text="From User"
         android:minWidth="100dp"
-        app:layout_constraintBottom_toTopOf="@id/receivedHistory"
+        app:layout_constraintBottom_toTopOf="@id/history"
         app:layout_constraintStart_toEndOf="@id/receivedStickers"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,12 +43,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Sent Time"
-        app:layout_constraintBottom_toTopOf="@id/receivedHistory"
+        app:layout_constraintBottom_toTopOf="@id/history"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/fromUser" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/receivedHistory"
+        android:id="@+id/history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

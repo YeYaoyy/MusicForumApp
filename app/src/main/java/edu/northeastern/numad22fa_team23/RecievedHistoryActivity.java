@@ -24,7 +24,7 @@ public class RecievedHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recieved_history);
         messages = (List<Message>) getIntent().getExtras().get("history");
-        RecyclerView receivedHistory = findViewById(R.id.receivedHistory);
+        RecyclerView receivedHistory = findViewById(R.id.history);
         receivedHistory.setLayoutManager(new LinearLayoutManager(this));
         receivedHistory.setAdapter(new MessageAdapter(messages));
     }

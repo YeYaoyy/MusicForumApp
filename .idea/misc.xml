@@ -10,12 +10,12 @@
         <entry key="app/src/main/res/drawable/ic_team23_foreground.xml" value="0.138" />
         <entry key="app/src/main/res/layout/activity_at_your_service.xml" value="0.12987012987012986" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2682291666666667" />
-        <entry key="app/src/main/res/layout/activity_received_history.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_recieved_history.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_recieved_history.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_recyclerview.xml" value="0.27395833333333336" />
         <entry key="app/src/main/res/layout/activity_retrofit.xml" value="0.28532608695652173" />
+        <entry key="app/src/main/res/layout/item_received_history.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/layout_at_your_service.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/layout_stick_it_to_em.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout_stick_it_to_em.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/place_layout.xml" value="0.259375" />
       </map>
