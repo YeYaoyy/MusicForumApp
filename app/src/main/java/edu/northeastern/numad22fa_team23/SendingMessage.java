@@ -77,19 +77,24 @@ public class SendingMessage extends AppCompatActivity {
     //private HashMap<String, String> map;
     //private HashMap<String, String> submap;
     private int size;
+    private int ifExit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        username = i.getStringExtra("username");
+        Bundle bundle = i.getBundleExtra("bundle");
+        username = bundle.getString("username");
+        ifExit = bundle.getInt("ifExit");
+
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         createNotificationChannel();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        setSpinner();
+
+
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -100,7 +105,7 @@ public class SendingMessage extends AppCompatActivity {
                             return;
                         }
 
-                        if (token == null) {
+                        if (ifExit == 0) {
                             // Get new FCM registration token
                             User user = new User(username);
 
@@ -115,6 +120,8 @@ public class SendingMessage extends AppCompatActivity {
                             user.setMessageList(messageList);
                             mDatabase.child("users").child(username).setValue(user);
                            // mDatabase.child("users").child(username).child("received").child("0").setValue("test");
+                        } else{
+                            token = task.getResult();
                         }
 
                         System.out.println(token);
@@ -139,19 +146,22 @@ public class SendingMessage extends AppCompatActivity {
                             newToken = (String) map.get("token");
                             //size = ((HashMap<String, String>) map.get("received")).size();
                             savedMessageList = (List<Message>) map.get("messageList");
+                            if (savedMessageList == null) {
+                                savedMessageList = new ArrayList<>();
+                            }
+                            Date now = new Date();
+                            Message newMessage = new Message(username, selectedUsername, now.toString(), selectedImage.getId());
+                            //mDatabase.child("users").child(selectedUsername).child("received").child(Integer.toString(size))
+                            //        .setValue(newMessage.getSender() + " " + newMessage.getTime() + " " + newMessage.getImageId());
+                            savedMessageList.add(newMessage);
+                            mDatabase.child("users").child(selectedUsername).child("messageList").setValue(savedMessageList);
 
                         }
                     }
                 });
 
-                uploadPicture();
+                //uploadPicture();
                 sendMessageToDevice(v);
-                Date now = new Date();
-                Message newMessage = new Message(username, selectedUsername, now.toString(), selectedImage.getId());
-                //mDatabase.child("users").child(selectedUsername).child("received").child(Integer.toString(size))
-                //        .setValue(newMessage.getSender() + " " + newMessage.getTime() + " " + newMessage.getImageId());
-                savedMessageList.add(newMessage);
-                mDatabase.child("users").child(selectedUsername).child("messageList").setValue(savedMessageList);
             }
         });
 
@@ -183,7 +193,7 @@ public class SendingMessage extends AppCompatActivity {
             }
         });
 
-
+        setSpinner();
 
     }
 
