@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -88,9 +89,11 @@ public class SendingMessage extends AppCompatActivity {
         Intent i = getIntent();
         Bundle bundle = i.getBundleExtra("bundle");
         username = bundle.getString("username");
+
         ifExit = bundle.getInt("ifExit");
 
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
+        binding.sender.setText("Username:" + username);
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         createNotificationChannel();
@@ -432,19 +435,19 @@ public class SendingMessage extends AppCompatActivity {
     }
 
 
-    public static Properties getProperties(Context context)  {
-        Properties properties = new Properties();
-        AssetManager assetManager = context.getAssets();
-        InputStream inputStream = null;
-        try {
-            inputStream = assetManager.open("firebase.properties");
-            properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return properties;
-    }
+//    public static Properties getProperties(Context context)  {
+//        Properties properties = new Properties();
+//        AssetManager assetManager = context.getAssets();
+//        InputStream inputStream = null;
+//        try {
+//            inputStream = assetManager.open("firebase.properties");
+//            properties.load(inputStream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return properties;
+//    }
 
     public void createNotificationChannel() {
         // This must be called early because it must be called before a notification is sent.
@@ -461,5 +464,21 @@ public class SendingMessage extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you sure you want to dismiss?")
+                .setPositiveButton("Yes",
+                        (dialog, id) -> {
+                            finish();
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                .create();
+        builder.show();
+//
+//            super.onBackPressed();
+
     }
 }

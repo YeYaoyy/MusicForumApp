@@ -49,7 +49,7 @@
         android:id="@+id/sender"
         android:layout_width="222dp"
         android:layout_height="33dp"
-        android:text="Please type your friend's username"
+        android:text="Username: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/spinner"
         app:layout_constraintHorizontal_bias="0.269"

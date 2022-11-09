@@ -1,5 +1,6 @@
 package edu.northeastern.numad22fa_team23;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,19 @@ public class RecievedHistoryActivity extends AppCompatActivity {
         RecyclerView receivedHistory = findViewById(R.id.history);
         receivedHistory.setLayoutManager(new LinearLayoutManager(this));
         receivedHistory.setAdapter(new MessageAdapter(messages));
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you sure you want to dismiss?")
+                .setPositiveButton("Yes",
+                        (dialog, id) -> {
+                            finish();
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                .create();
+        builder.show();
     }
 
 }
