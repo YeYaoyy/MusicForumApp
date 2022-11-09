@@ -66,32 +66,68 @@ public class SendingMessage extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private String selectedUsername;
     private ImageView selectedImage;
+    private List<Message> savedMessageList = new ArrayList<>();
 
     LayoutStickItToEmBinding binding;
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
     private static String token;
     private String newToken;
+    private String username;
+    //private HashMap<String, String> map;
+    //private HashMap<String, String> submap;
+    private int size;
+    private int ifExit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        String username = i.getStringExtra("username");
+        Bundle bundle = i.getBundleExtra("bundle");
+        username = bundle.getString("username");
+        ifExit = bundle.getInt("ifExit");
+
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         createNotificationChannel();
 
-//        binding.selectImagebtn.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                chooseImage();
-//            }
-//        });
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        setSpinner();
+
+
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            System.out.println("Fetching FCM registration token failed");
+                            return;
+                        }
+
+                        if (ifExit == 0) {
+                            // Get new FCM registration token
+                            User user = new User(username);
+
+
+                            //mDatabase.child("users").child(user.getUsername()).setValue(user);
+                            token = task.getResult();
+                            user.setToken(token);
+
+                            //mDatabase.child("users").child(username).child("token").setValue(token);
+                            List<Message> messageList = new ArrayList<>();
+                            //messageList.add(new Message(username, username, new Date().toString(), R.id.image01));
+                            user.setMessageList(messageList);
+                            mDatabase.child("users").child(username).setValue(user);
+                           // mDatabase.child("users").child(username).child("received").child("0").setValue("test");
+                        } else{
+                            token = task.getResult();
+                        }
+
+                        System.out.println(token);
+                        //Toast.makeText(SendingMessage.this, "token: " + token, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         binding.sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,13 +142,25 @@ public class SendingMessage extends AppCompatActivity {
                         }
                         else {
                             Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                            HashMap<String, String> map = (HashMap<String, String>) task.getResult().getValue();
-                            newToken = map.get("token");
+                            HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
+                            newToken = (String) map.get("token");
+                            //size = ((HashMap<String, String>) map.get("received")).size();
+                            savedMessageList = (List<Message>) map.get("messageList");
+                            if (savedMessageList == null) {
+                                savedMessageList = new ArrayList<>();
+                            }
+                            Date now = new Date();
+                            Message newMessage = new Message(username, selectedUsername, now.toString(), selectedImage.getId());
+                            //mDatabase.child("users").child(selectedUsername).child("received").child(Integer.toString(size))
+                            //        .setValue(newMessage.getSender() + " " + newMessage.getTime() + " " + newMessage.getImageId());
+                            savedMessageList.add(newMessage);
+                            mDatabase.child("users").child(selectedUsername).child("messageList").setValue(savedMessageList);
+
                         }
                     }
                 });
 
-                uploadPicture();
+                //uploadPicture();
                 sendMessageToDevice(v);
             }
         });
@@ -145,25 +193,7 @@ public class SendingMessage extends AppCompatActivity {
             }
         });
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            System.out.println("Fetching FCM registration token failed");
-                            return;
-                        }
-
-                        if (token == null) {
-                            // Get new FCM registration token
-                            token = task.getResult();
-                            mDatabase.child("users").child(username).child("token").setValue(token);
-                        }
-
-                        System.out.println(token);
-                        //Toast.makeText(SendingMessage.this, "token: " + token, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        setSpinner();
 
     }
 
@@ -224,7 +254,7 @@ public class SendingMessage extends AppCompatActivity {
 
 
         final String resp = fcmHttpConnection(SERVER_KEY, jPayload);
-        //postToastMessage("Status from Server: " + resp, getApplicationContext());
+        postToastMessage("Status from Server: " + resp, getApplicationContext());
 
     }
 
@@ -234,7 +264,7 @@ public class SendingMessage extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             }
         });
     }
