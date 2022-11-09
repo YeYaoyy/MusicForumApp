@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder>{
-    public final List<Message> messages;
+    public final List<HashMap<String, String>> messages;
 
-    public MessageAdapter(List<Message> messages) {
+    public MessageAdapter(List<HashMap<String, String>> messages) {
         this.messages = messages;
     }
 

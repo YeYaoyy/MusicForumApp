@@ -20,29 +20,29 @@ public class MessageViewHolder extends RecyclerView.ViewHolder{
         this.fromUser = (TextView)itemView.findViewById(R.id.fromUser);
         this.sendTime = (TextView) itemView.findViewById(R.id.sendTime);
     }
-    public void bindThisData(Message messageToBind) {
+    public void bindThisData(HashMap<String, String> messageToBind) {
 //        System.out.println(messageToBind);
         HashMap<Integer, Integer> emoji = new HashMap<>();
-        int imageResource = messageToBind.getImageId();
-//        String imageResource = messageToBind.get("imageId");
+//        int imageResource = messageToBind.getImageId();
+        String imageResource = String.valueOf(messageToBind.get("imageId"));
         emoji.put(R.id.image01, R.drawable.image01);
         emoji.put(R.id.image02, R.drawable.image02);
         emoji.put(R.id.image03, R.drawable.image03);
-        fromUser.setText(messageToBind.getSender());
-        sendTime.setText(messageToBind.getTime());
-//        fromUser.setText(messageToBind.get("sender"));
-//        sendTime.setText(messageToBind.get("time"));
-//        for(int i : emoji.keySet()){
-//            if(imageResource.equals(String.valueOf(i))){
-//                receivedHistory.setImageResource(emoji.get(i));
-//                break;
-//            }
-//        }
+//        fromUser.setText(messageToBind.getSender());
+//        sendTime.setText(messageToBind.getTime());
+        fromUser.setText(messageToBind.get("sender"));
+        sendTime.setText(messageToBind.get("time"));
         for(int i : emoji.keySet()){
-            if(imageResource == i){
+            if(imageResource.equals(String.valueOf(i))){
                 receivedHistory.setImageResource(emoji.get(i));
                 break;
             }
         }
+//        for(int i : emoji.keySet()){
+//            if(imageResource == i){
+//                receivedHistory.setImageResource(emoji.get(i));
+//                break;
+//            }
+//        }
     }
 }

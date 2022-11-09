@@ -136,6 +136,14 @@ public class SendingMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectedUsername = binding.spinner.getSelectedItem().toString();
+                if(selectedUsername == null) {
+                    Toast.makeText(SendingMessage.this, "Please select a user", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(selectedImage == null) {
+                    Toast.makeText(SendingMessage.this, "Please select a sticker", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 mDatabase.child("users").child(selectedUsername).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -212,8 +220,8 @@ public class SendingMessage extends AppCompatActivity {
                         else {
                             Log.d("firebase", String.valueOf(task.getResult().getValue()));
                             HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
-                            List<Message> history = new ArrayList<>();
-                            history = (List<Message>) map.get("messageList");
+                            List<HashMap<String, String>> history = new ArrayList<>();
+                            history = (List<HashMap<String, String>>) map.get("messageList");
                             Intent intent = new Intent(SendingMessage.this, RecievedHistoryActivity.class);
                             intent.putExtra("history", (Serializable) history);
                             startActivity(intent);
