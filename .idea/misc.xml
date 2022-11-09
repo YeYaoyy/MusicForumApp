@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/ic_team23_foreground.xml" value="0.138" />
+        <entry key="app/src/main/res/layout/activity_about_us.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/activity_at_your_service.xml" value="0.12987012987012986" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/layout/activity_recieved_history.xml" value="0.335" />

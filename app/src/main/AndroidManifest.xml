@@ -40,6 +40,8 @@
 
         <activity android:name=".StickItToEm"
             android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".AboutUs"
+            android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".AtYourService"
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".ActivityOuput"
