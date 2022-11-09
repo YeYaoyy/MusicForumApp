@@ -161,6 +161,9 @@ public class SendingMessage extends AppCompatActivity {
                 });
 
                 //uploadPicture();
+                progressDialog = new ProgressDialog(SendingMessage.this);
+                progressDialog.setTitle("Sending message...");
+                progressDialog.show();
                 sendMessageToDevice(v);
             }
         });
@@ -254,6 +257,9 @@ public class SendingMessage extends AppCompatActivity {
 
 
         final String resp = fcmHttpConnection(SERVER_KEY, jPayload);
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
         postToastMessage("Status from Server: " + resp, getApplicationContext());
 
     }
@@ -264,7 +270,7 @@ public class SendingMessage extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                //Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             }
         });
     }

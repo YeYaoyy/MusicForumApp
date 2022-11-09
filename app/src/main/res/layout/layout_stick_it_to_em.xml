@@ -7,66 +7,89 @@
     tools:context=".SendingMessage">
 
 
-    <ImageView
-        android:id="@+id/image01"
-        android:layout_width="400px"
-        android:layout_height="400px"
-        android:layout_marginStart="24dp"
-        android:onClick="onClick"
-        android:src="@drawable/image01"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/image02"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.31"
-        tools:ignore="OnClick" />
-
-    <ImageView
-        android:id="@+id/image02"
-        android:layout_width="400px"
-        android:layout_height="400px"
-        android:layout_marginEnd="36dp"
-        android:onClick="onClick"
-        android:src="@drawable/image02"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        app:layout_constraintVertical_bias="0.163"
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/image03"
-        android:layout_width="99dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="44dp"
-        android:onClick="onClick"
-        android:src="@drawable/image03"
+    <RelativeLayout
+        android:id="@+id/image_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/sendMessage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image02"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/sender">
+
+        <ImageView
+            android:id="@+id/image01"
+            android:layout_width="119dp"
+            android:layout_height="115dp"
+            android:layout_marginRight="18dp"
+            android:layout_toLeftOf="@id/image02"
+            android:src="@drawable/image01" />
+
+        <ImageView
+            android:id="@+id/image02"
+            android:layout_width="130dp"
+            android:layout_height="113dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/image02" />
+
+        <ImageView
+            android:id="@+id/image03"
+            android:layout_width="84dp"
+            android:layout_height="86dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="13dp"
+            android:layout_toRightOf="@id/image02"
+            android:src="@drawable/image03" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/sender"
+        android:layout_width="222dp"
+        android:layout_height="33dp"
+        android:text="Please type your friend's username"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/spinner"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09"></TextView>
 
     <Button
         android:id="@+id/sendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="172dp"
+        android:layout_marginTop="44dp"
         android:text="send"
-        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_layout" />
 
     <Spinner
         android:id="@+id/spinner"
+        android:layout_width="118dp"
+        android:layout_height="66dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.043" />
+
+    <Button
+        android:id="@+id/history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="60dp"
+        android:text="Check History"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendMessage"
+        app:layout_constraintVertical_bias="0.054" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
