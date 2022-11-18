@@ -28,5 +28,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AboutUs.class);
             startActivity(intent);
         }
+        if (theId == R.id.project) {
+            Intent intent = new Intent(this, proj_login.class);
+            startActivity(intent);
+        }
     }
 }
