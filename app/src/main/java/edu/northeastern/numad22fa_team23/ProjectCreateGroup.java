@@ -37,6 +37,7 @@ public class ProjectCreateGroup extends AppCompatActivity {
             createGroupBtn.setText("Processing...");
             final String newGroup = addGroupEditText.getText().toString().trim();
             final String newGroupDescription = groupDescpritionEditText.getText().toString();
+            //if the name of new group is null, give a toast.
             if(newGroup.equals("")){
                 createGroupBtn.setText("Create");
                 createGroupBtn.setEnabled(true);
@@ -46,12 +47,16 @@ public class ProjectCreateGroup extends AppCompatActivity {
             }
 
             mDatabase.child("Group").addListenerForSingleValueEvent(new ValueEventListener(){
-
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot group : snapshot.getChildren()) {
+                        //if the name already exists
                         if(group.getKey().equals(newGroup)){
-
+                            Toast.makeText(ProjectCreateGroup.this, "Failed: The group name" + newGroup + "already exists.",
+                                    Toast.LENGTH_SHORT).show();
+                            createGroupBtn.setText("Create");
+                            createGroupBtn.setEnabled(true);
+                            return;
                         }
                     }
                 }
