@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/YAO/Documents/NEU/cs/5520/cs5520_team23/cs5520_team23/app/src/main/res/layout/layout_stick_it_to_em.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_action_name.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-anydpi/ic_stat_name.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.138" />
@@ -11,6 +12,8 @@
         <entry key="app/src/main/res/layout/activity_about_us.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/layout/activity_at_your_service.xml" value="0.12987012987012986" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2682291666666667" />
+        <entry key="app/src/main/res/layout/activity_proj_create_group.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_proj_group_info.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_project_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_recieved_history.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_recyclerview.xml" value="0.27395833333333336" />
