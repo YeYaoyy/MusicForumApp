@@ -50,7 +50,11 @@
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".RecievedHistoryActivity"
             android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".proj_login"
+        <activity android:name=".ProjectLogin"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectMainActivity"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectSignup"
             android:configChanges="orientation|screenSize"></activity>
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
