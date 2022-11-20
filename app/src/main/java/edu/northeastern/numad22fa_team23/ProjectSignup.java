@@ -53,7 +53,7 @@ public class ProjectSignup extends AppCompatActivity {
                         } else {
                             FirebaseUser user = mAuth.getCurrentUser();
                             ProjectUser pu = new ProjectUser(username.getText().toString());
-                            mDatabase.child("Project_Users").child(username.getText().toString()).setValue(user);
+                            mDatabase.child("Project_Users").child(username.getText().toString()).setValue(pu);
                         }
                     }
                 }

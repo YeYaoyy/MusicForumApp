@@ -10,5 +10,5 @@ public class Moment {
     private int momentId;
     private String musicName;
     private String thought;
-    private List<Comment> commentList;
+    //private List<Comment> commentList;
 }

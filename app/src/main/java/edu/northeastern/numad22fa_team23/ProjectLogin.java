@@ -48,6 +48,7 @@ public class ProjectLogin extends AppCompatActivity {
            if (task.isSuccessful()) {
                Log.d("TAG", "signInWithEmail:success");
                FirebaseUser user = mAuth.getCurrentUser();
+               System.out.println(user.getDisplayName());
            } else {
                Log.w("TAG", "signInWithEmail:failure", task.getException());
                Toast.makeText(ProjectLogin.this, "Authentication failed.",
