@@ -25,9 +25,9 @@
         android:theme="@style/Theme.NUMAD22Fa_Team23"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".ProjectGroupUI"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ProjectGroupUI"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ProjectGroupOperation"
             android:exported="false" />
