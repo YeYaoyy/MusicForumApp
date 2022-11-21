@@ -8,20 +8,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class ProjectCreateGroup extends AppCompatActivity {
-    private EditText addGroupEditText, groupDescpritionEditText;
+    private EditText addGroupEditText, groupDescriptionEditText;
     private Button createGroupBtn;
     private DatabaseReference mDatabase;
-
-
-
-
-
+    private FirebaseAuth mAuth;
+    private String uid;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +31,18 @@ public class ProjectCreateGroup extends AppCompatActivity {
         setContentView(R.layout.activity_proj_create_group);
         createGroupBtn = findViewById(R.id.createGroup_button);
         addGroupEditText = findViewById(R.id.createGroup_editText);
-        groupDescpritionEditText = findViewById(R.id.createGroupDescription_editText);
+        groupDescriptionEditText = findViewById(R.id.createGroupDescription_editText);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        uid = currentUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         //Button to create a new group
         createGroupBtn.setOnClickListener((view)-> {
             createGroupBtn.setEnabled(false);
             createGroupBtn.setText("Processing...");
             final String newGroup = addGroupEditText.getText().toString().trim();
-            final String newGroupDescription = groupDescpritionEditText.getText().toString();
+            final String newGroupDescription = groupDescriptionEditText.getText().toString();
             //if the name of new group is null, give a toast.
             if(newGroup.equals("")){
                 createGroupBtn.setText("Create");
@@ -59,11 +65,19 @@ public class ProjectCreateGroup extends AppCompatActivity {
                             return;
                         }
                     }
+                    mDatabase.child("Groups").child(newGroup).child("GroupInfo").child("Admin").setValue("MLEFRubFlwNrvCs95RJ38ph5SBD2");
+                    mDatabase.child("Groups").child(newGroup).child("GroupInfo").child("Description").setValue(newGroupDescription);
+                    mDatabase.child("Users").child(uid).child("Groups").child(newGroup).setValue(false);
+
+                    addGroupEditText.setText("");
+                    groupDescriptionEditText.setText("");
+                    createGroupBtn.setText("Create");
+                    createGroupBtn.setEnabled(true);
+                    Snackbar.make(findViewById(android.R.id.content), "Successfully created the group" + newGroup, Snackbar.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                 }
             });
         });

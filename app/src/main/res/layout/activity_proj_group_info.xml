@@ -6,13 +6,108 @@
     android:layout_height="match_parent"
     tools:context=".ProjectGroupInfo">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/groupname"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:text="Group"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10sp"
+        android:text="Group Description"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingLeft="15sp"
+                android:paddingTop="5sp"
+                android:paddingRight="15sp"
+                android:layout_marginStart="10sp"
+                android:maxLines="5"
+                android:text=""
+                android:id="@+id/groupDescription"/>
+
+            <Button
+                android:id="@+id/grpbtShowmore"
+                android:layout_width="match_parent"
+                android:text="Show more..."
+                android:layout_marginRight="25sp"
+                android:textAllCaps="false"
+                android:gravity="right"
+                android:textColor="@android:color/holo_blue_light"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="All Listed Chats"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_height="40sp"
+            android:id="@+id/createChats"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:text="Create Chats"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="All Listed Moments"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_height="40sp"
+            android:id="@+id/createMoments"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:text="Create Moments"/>
+    </RelativeLayout>
 
 
-
-
-
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/eventList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="109dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
