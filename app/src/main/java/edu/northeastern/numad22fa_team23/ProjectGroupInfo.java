@@ -47,6 +47,7 @@ public class ProjectGroupInfo extends AppCompatActivity {
         //Fill event list
         chatRecyclerView = findViewById(R.id.chatList);
         momentRecyclerView = findViewById(R.id.momentList);
+
     }
 
 
