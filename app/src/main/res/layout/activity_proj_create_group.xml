@@ -71,7 +71,7 @@
                 android:id="@+id/createGroup_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Submit" />
+                android:text="Create" />
         </LinearLayout>
     </ScrollView>
 

@@ -2,6 +2,8 @@ package edu.northeastern.numad22fa_team23;
 
 import java.util.List;
 
+import edu.northeastern.numad22fa_team23.model.Moment;
+
 //group class
 public class ProjectGroup {
     public String getGroupName() {
@@ -28,18 +30,18 @@ public class ProjectGroup {
         this.moments = moments;
     }
 
-//    public List<Chat> getChats() {
-//        return chats;
-//    }
-//
-//    public void setChats(List<Chat> chats) {
-//        this.chats = chats;
-//    }
+    public List<Chat> getChats() {
+        return chats;
+    }
+
+    public void setChats(List<Chat> chats) {
+        this.chats = chats;
+    }
 
     public String groupName;
     public String description;
     public List<Moment> moments;
-//    public List<Chat> chats;
+    public List<Chat> chats;
 
 
 }
