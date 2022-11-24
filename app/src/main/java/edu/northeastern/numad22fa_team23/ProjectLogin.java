@@ -1,5 +1,6 @@
 package edu.northeastern.numad22fa_team23;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -24,8 +25,6 @@ public class ProjectLogin extends AppCompatActivity {
     private EditText email;
     private Button loginButton;
     private EditText password;
-    private Button signup;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,44 +39,7 @@ public class ProjectLogin extends AppCompatActivity {
         loginButton = findViewById(R.id.login);
         password = findViewById(R.id.password);
         loginButton.setOnClickListener(v -> {login();});
-        signup = findViewById(R.id.signup);
-        signup.setOnClickListener(v -> {signUp();});
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-                //User user = new User(userName.getText().toString());
 
-                //mDatabase.child("users").child(user.getUsername()).setValue(user);
-                //mDatabase.child("users").child(user.getUsername()).child("token").setValue(token);
-//                Intent intent = new Intent(this, SendingMessage.class);
-//                Bundle bundle = new Bundle();
-               // mDatabase.child("final_project_users").child(email.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                 //   @Override
-                  //  public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                      //  if (!task.isSuccessful()) {
-                        //    Log.e("firebase", "connection failed", task.getException());
-                      //  }
-                      //  else {
-                            //Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                          //  String result = String.valueOf(task.getResult().getValue());
-                           // if (result.equals("null")) {
-//                                bundle.putInt("ifExit", 0);
-                                //intent.putExtra("ifExit", 0);
-                           // } else {
-                                //intent.putExtra("ifExit", 1);
-//                                bundle.putInt("ifExit", 1);
-                           // }
-//                            bundle.putString("username", userName.getText().toString());
-//                            intent.putExtra("bundle", bundle);
-//                            //intent.putExtra("username",userName.getText().toString());
-//                            startActivity(intent);
-//                        }
-//                    }
-//                });
-//
-//            }
-//        });
     }
 
     private void login() {
@@ -87,6 +49,8 @@ public class ProjectLogin extends AppCompatActivity {
            if (task.isSuccessful()) {
                Log.d("TAG", "signInWithEmail:success");
                FirebaseUser user = mAuth.getCurrentUser();
+               Intent intent = new Intent(this, ChatActivity.class);
+               startActivity(intent);
            } else {
                Log.w("TAG", "signInWithEmail:failure", task.getException());
                Toast.makeText(ProjectLogin.this, "Authentication failed.",
@@ -95,36 +59,4 @@ public class ProjectLogin extends AppCompatActivity {
         });
     }
 
-    private void signUp() {
-        String email_input = email.getText().toString();
-        String pw = password.getText().toString();
-        mAuth.createUserWithEmailAndPassword(email_input, pw).addOnCompleteListener(
-                this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TAG", "sign up:failure", task.getException());
-                            Toast.makeText(ProjectLogin.this, task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                        }
-                    }
-                }
-        );
-    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mAuth.addAuthStateListener(mAuthListener);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (mAuthListener != null) {
-//            mAuth.removeAuthStateListener(mAuthListener);
-//        }
-//    }
 }
