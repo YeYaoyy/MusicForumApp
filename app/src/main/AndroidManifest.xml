@@ -37,7 +37,8 @@
             </intent-filter>
         </service>
         -->
-
+        <activity android:name=".MomentsActivity"
+            android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".StickItToEm"
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".AboutUs"

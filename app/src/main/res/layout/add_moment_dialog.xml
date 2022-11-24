@@ -40,6 +40,7 @@
 
             <EditText
                 android:id="@+id/thoughtContent"
+                android:layout_height="100dp"
                 android:hint="content" />
         </TableRow>
 

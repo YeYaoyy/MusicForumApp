@@ -54,14 +54,14 @@ public class MomentsActivity extends AppCompatActivity{
             }
         });
         Button cancelAddMoment = (Button)dialogView.findViewById(R.id.button_cancelAddMoment);
+        AlertDialog alertDialog = builder.create();
         cancelAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                alertDialog.dismiss();
             }
         });
         builder.setCancelable(true);
-        AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
