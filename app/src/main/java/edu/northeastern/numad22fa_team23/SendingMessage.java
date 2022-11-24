@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -68,6 +71,7 @@ public class SendingMessage extends AppCompatActivity {
     private ImageView selectedImage;
     private List<Message> savedMessageList = new ArrayList<>();
 
+
     LayoutStickItToEmBinding binding;
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
@@ -85,9 +89,11 @@ public class SendingMessage extends AppCompatActivity {
         Intent i = getIntent();
         Bundle bundle = i.getBundleExtra("bundle");
         username = bundle.getString("username");
+
         ifExit = bundle.getInt("ifExit");
 
         binding = LayoutStickItToEmBinding.inflate(getLayoutInflater());
+        binding.sender.setText("Username:" + username);
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         createNotificationChannel();
@@ -133,6 +139,14 @@ public class SendingMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectedUsername = binding.spinner.getSelectedItem().toString();
+                if(selectedUsername == null) {
+                    Toast.makeText(SendingMessage.this, "Please select a user", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(selectedImage == null) {
+                    Toast.makeText(SendingMessage.this, "Please select a sticker", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 mDatabase.child("users").child(selectedUsername).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -197,6 +211,28 @@ public class SendingMessage extends AppCompatActivity {
         });
 
         setSpinner();
+        binding.history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase.child("users").child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        }
+                        else {
+                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
+                            List<HashMap<String, String>> history = new ArrayList<>();
+                            history = (List<HashMap<String, String>>) map.get("messageList");
+                            Intent intent = new Intent(SendingMessage.this, RecievedHistoryActivity.class);
+                            intent.putExtra("history", (Serializable) history);
+                            startActivity(intent);
+                        }
+                    }
+                });
+            }
+        });
 
     }
 
@@ -399,19 +435,19 @@ public class SendingMessage extends AppCompatActivity {
     }
 
 
-    public static Properties getProperties(Context context)  {
-        Properties properties = new Properties();
-        AssetManager assetManager = context.getAssets();
-        InputStream inputStream = null;
-        try {
-            inputStream = assetManager.open("firebase.properties");
-            properties.load(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return properties;
-    }
+//    public static Properties getProperties(Context context)  {
+//        Properties properties = new Properties();
+//        AssetManager assetManager = context.getAssets();
+//        InputStream inputStream = null;
+//        try {
+//            inputStream = assetManager.open("firebase.properties");
+//            properties.load(inputStream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return properties;
+//    }
 
     public void createNotificationChannel() {
         // This must be called early because it must be called before a notification is sent.
@@ -428,5 +464,21 @@ public class SendingMessage extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you sure you want to dismiss?")
+                .setPositiveButton("Yes",
+                        (dialog, id) -> {
+                            finish();
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                .create();
+        builder.show();
+//
+//            super.onBackPressed();
+
     }
 }

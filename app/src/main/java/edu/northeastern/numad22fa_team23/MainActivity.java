@@ -24,5 +24,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, StickItToEm.class);
             startActivity(intent);
         }
+        if (theId == R.id.about) {
+            Intent intent = new Intent(this, AboutUs.class);
+            startActivity(intent);
+        }
+        if (theId == R.id.project) {
+            Intent intent = new Intent(this, MomentsActivity.class);
+            startActivity(intent);
+        }
     }
 }

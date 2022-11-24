@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/alertDialogAddMomentForm"
+        android:orientation="vertical"
+        android:padding="35dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/musicPrompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Music:" />
+
+            <EditText
+                android:id="@+id/musicDialogName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="music name" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/contentPrompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="content" />
+
+            <EditText
+                android:id="@+id/thoughtContent"
+                android:hint="content" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/button_addMoment"
+                android:text="add"
+                android:layout_marginRight="10dp"/>
+
+
+            <Button
+                android:id="@+id/button_cancelAddMoment"
+                android:text="cancel"
+                android:layout_marginLeft="10dp"/>
+        </TableRow>
+
+    </TableLayout>
+
+
+
+
+
+
+</LinearLayout>
