@@ -56,6 +56,8 @@
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".ProjectSignup"
             android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ChatActivity"
+            android:configChanges="orientation|screenSize"></activity>
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />

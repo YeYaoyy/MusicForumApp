@@ -14,37 +14,38 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.util.List;
 
-public class ChatListAdapter {
+public class ChatListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<Chat> chatList;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static final int MESSAGE_SENT = 1;
+    private static final int MESSAGE_RECEIVED = 2;
+    int temp = MESSAGE_SENT;
 
     public ChatListAdapter(Context context, List<Chat> chat) {
         mContext = context;
         chatList = chat;
     }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//        BaseMessage message = (BaseMessage) mMessageList.get(position);
-//
-//        if (message.getuID().equals(mAuth.getCurrentUser().getUid())) {
-//            // If the current user is the sender of the message
-//            return VIEW_TYPE_MESSAGE_SENT;
-//        } else {
-//            // If some other user sent the message
-//            return VIEW_TYPE_MESSAGE_RECEIVED;
-//        }
-//    }
+    @Override
+    public int getItemViewType(int position) {
+        Chat chat = (Chat) chatList.get(position);
+
+        if (chat.getUid().equals(mAuth.getCurrentUser().getUid())) {
+            return MESSAGE_SENT;
+        } else {
+            return MESSAGE_RECEIVED;
+        }
+    }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+        if (viewType == MESSAGE_SENT) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_message_sent, parent, false);
             return new SentMessageHolder(view);
-        } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
+        } else if (viewType == MESSAGE_RECEIVED) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_message_received, parent, false);
             return new ReceivedMessageHolder(view);
@@ -55,20 +56,20 @@ public class ChatListAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        BaseMessage message = (BaseMessage) mMessageList.get(position);
+        Chat chat = (Chat) chatList.get(position);
 
         switch (holder.getItemViewType()) {
-            case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) holder).bind(message);
+            case MESSAGE_SENT:
+                ((SentMessageHolder) holder).bind(chat);
                 break;
-            case VIEW_TYPE_MESSAGE_RECEIVED:
-                ((ReceivedMessageHolder) holder).bind(message);
+            case MESSAGE_RECEIVED:
+                ((ReceivedMessageHolder) holder).bind(chat);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mMessageList.size();
+        return chatList.size();
     }
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
@@ -77,15 +78,15 @@ public class ChatListAdapter {
         SentMessageHolder(View itemView) {
             super(itemView);
 
-            messageText = (TextView) itemView.findViewById(R.id.text_message_body);
-            timeText = (TextView) itemView.findViewById(R.id.text_message_time);
+            messageText = (TextView) itemView.findViewById(R.id.message_send_content);
+            timeText = (TextView) itemView.findViewById(R.id.message_send_time);
         }
 
-        void bind(BaseMessage message) {
-            messageText.setText(message.getContent());
+        void bind(Chat chat) {
+            messageText.setText(chat.getContent());
 
             // Format the stored timestamp into a readable String using method.
-            String ts = message.getTime();
+            String ts = chat.getTime();
             timeText.setText(ts.substring(0,19));
         }
     }
@@ -95,19 +96,19 @@ public class ChatListAdapter {
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
-            messageText = (TextView) itemView.findViewById(R.id.text_message_body);
-            timeText = (TextView) itemView.findViewById(R.id.text_message_time);
-            nameText = (TextView) itemView.findViewById(R.id.text_message_name);
+            messageText = (TextView) itemView.findViewById(R.id.message_receive_body);
+            timeText = (TextView) itemView.findViewById(R.id.message_receive_time);
+            nameText = (TextView) itemView.findViewById(R.id.message_name);
         }
 
-        void bind(BaseMessage message) {
-            messageText.setText(message.getContent());
+        void bind(Chat chat) {
+            messageText.setText(chat.getContent());
 
             // Format the stored timestamp into a readable String using method.
-            String ts = message.getTime();
+            String ts = chat.getTime();
             timeText.setText(ts.substring(0, 19));
             //TODO if within today then display time only otherwise display date too
-            nameText.setText(message.getName());
+            nameText.setText(chat.getUsername());
 
         }
     }

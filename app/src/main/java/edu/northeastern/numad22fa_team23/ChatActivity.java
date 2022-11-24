@@ -43,7 +43,7 @@ public class ChatActivity extends AppCompatActivity {
     String groupName;
     String myname;
     RecyclerView chatRecycler;
-    ChatListAdapter chatListAdapterAdapter;
+    ChatListAdapter chatListAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,13 +54,22 @@ public class ChatActivity extends AppCompatActivity {
         context = this;
         mAuth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
-        groupName = intent.getStringExtra("groupname");
-        myname = intent.getStringExtra("myname");
-        FirebaseUser user = mAuth.getCurrentUser();
+//        groupName = intent.getStringExtra("groupname");
+//        myname = intent.getStringExtra("myname");
+        groupName = "groupName";
+        myname = "qwe";
 
+        FirebaseUser user = mAuth.getCurrentUser();
+        String uid = "OfUlIQ1M42YjTg8iFplDJefLALX2";
+        String text = "h r u";
+        String time = "2022-11-21 21:12:13506";
+        Chat ch = new Chat(text, myname, time, uid);
+        List<Chat> l = new ArrayList<>();
+        l.add(ch);
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("Groups").child(groupName)
                 .child("Chats");
+        mDatabase.setValue(l);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +101,7 @@ public class ChatActivity extends AppCompatActivity {
 
                                 Log.d("timeStamp", timeStamp);
 
-                                Chat newChat = new Chat(msg, myname, timeStamp);
+                                Chat newChat = new Chat(msg, myname, timeStamp, mAuth.getCurrentUser().getUid());
                                 chatList.add(newChat);
                                 mDatabase.setValue(chatList);
                                 content.setText("");
@@ -105,19 +114,23 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        List<Chat> list = new ArrayList<>();
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot sn: snapshot.getChildren()){
-//                    Chat msg = sn.getValue(Chat.class);
-//                    messageList.add(msg);
-//                }
+                list.clear();
+                for(DataSnapshot sn: snapshot.getChildren()){
+                    System.out.println(sn.getValue().getClass() );
+                    Chat msg = (Chat) sn.getValue(Chat.class);
+                    list.add(msg);
+                }
                 List<Chat> chats = (List<Chat>) snapshot.getValue();
+                System.out.println(snapshot.getValue().getClass().getClass());
                 chatRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
-                chatListAdapterAdapter = new ChatListAdapter(context, chats);
+                chatListAdapter = new ChatListAdapter(context, list);
                 chatRecycler.setLayoutManager(new LinearLayoutManager(context));
-                chatRecycler.setAdapter(chatListAdapterAdapter);
-               // chatRecycler.scrollToPosition(snapshot.size()-1);
+                chatRecycler.setAdapter(chatListAdapter);
+               // chatRecycler.scrollToPosition(chatList.size()-1);
             }
 
             @Override
