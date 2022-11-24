@@ -1,5 +1,6 @@
 package edu.northeastern.numad22fa_team23;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -45,14 +46,16 @@ public class ProjectLogin extends AppCompatActivity {
         String email_input = email.getText().toString();
         String pw = password.getText().toString();
         mAuth.signInWithEmailAndPassword(email_input, pw).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                Log.d("TAG", "signInWithEmail:success");
-                FirebaseUser user = mAuth.getCurrentUser();
-            } else {
-                Log.w("TAG", "signInWithEmail:failure", task.getException());
-                Toast.makeText(ProjectLogin.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();
-            }
+           if (task.isSuccessful()) {
+               Log.d("TAG", "signInWithEmail:success");
+               FirebaseUser user = mAuth.getCurrentUser();
+               Intent intent = new Intent(this, ChatActivity.class);
+               startActivity(intent);
+           } else {
+               Log.w("TAG", "signInWithEmail:failure", task.getException());
+               Toast.makeText(ProjectLogin.this, "Authentication failed.",
+                       Toast.LENGTH_SHORT).show();
+           }
         });
     }
 
