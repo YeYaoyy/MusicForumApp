@@ -49,7 +49,7 @@ public class ProjectLogin extends AppCompatActivity {
            if (task.isSuccessful()) {
                Log.d("TAG", "signInWithEmail:success");
                FirebaseUser user = mAuth.getCurrentUser();
-               Intent intent = new Intent(this, ProjectGroupOperation.class);
+               Intent intent = new Intent(this, ProjectGroupUI.class);
                startActivity(intent);
            } else {
                Log.w("TAG", "signInWithEmail:failure", task.getException());
