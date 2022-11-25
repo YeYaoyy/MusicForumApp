@@ -16,6 +16,9 @@
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2682291666666667" />
         <entry key="app/src/main/res/layout/activity_message.xml" value="0.14766970618034447" />
+        <entry key="app/src/main/res/layout/activity_project_add_user_to_group.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_project_group_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_project_group_ui.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_project_login.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_project_main.xml" value="0.3026041666666667" />
         <entry key="app/src/main/res/layout/activity_project_signup.xml" value="0.1" />

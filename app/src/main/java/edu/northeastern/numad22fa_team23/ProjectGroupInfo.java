@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,11 +45,14 @@ public class ProjectGroupInfo extends AppCompatActivity {
     List<Moment> momentList;
     private DatabaseReference mDatabase;
     private DatabaseReference reference;
+    Context context;
+    ChatListAdapter chatListAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_proj_group_info);
         groupNameTitle = findViewById(R.id.groupname2);
         groupDescription = findViewById(R.id.groupDescription);
@@ -57,6 +62,7 @@ public class ProjectGroupInfo extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currUser = mAuth.getCurrentUser();
         uid = currUser.getUid();
+        joined = new HashSet<>();
 
         //Get the group name passed by GroupsUI
         Intent intent = getIntent();
@@ -71,10 +77,11 @@ public class ProjectGroupInfo extends AppCompatActivity {
                 layoutManager.getOrientation());
         chatRecyclerView.addItemDecoration(cdividerItemDecoration);
 
-        momentRecyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(ProjectGroupInfo.this);
+        momentRecyclerView.setLayoutManager(layoutManager2);
         DividerItemDecoration mdividerItemDecoration = new DividerItemDecoration(momentRecyclerView.getContext(),
                 layoutManager.getOrientation());
-        chatRecyclerView.addItemDecoration(mdividerItemDecoration);
+        momentRecyclerView.addItemDecoration(mdividerItemDecoration);
 
         showMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,21 +100,21 @@ public class ProjectGroupInfo extends AppCompatActivity {
             }
         });
 
-        createChat.setOnClickListener((v) ->{
-//            Intent intent = new Intent();
-//            intent.putExtra("groupName", groupname);
-//            startActivity(intent);
-        });
+//        createChat.setOnClickListener((v) ->{
+////            Intent intent = new Intent();
+////            intent.putExtra("groupName", groupname);
+////            startActivity(intent);
+//        });
 
-        createMoment.setOnClickListener((v) ->{
-//            Intent intent = new Intent();
-//            intent.putExtra("groupName", groupname);
-//            startActivity(intent);
-        });
+//        createMoment.setOnClickListener((v) ->{
+////            Intent intent = new Intent();
+////            intent.putExtra("groupName", groupname);
+////            startActivity(intent);
+//        });
 
         chatList = new ArrayList<Chat>();
         momentList = new ArrayList<Moment>();
-        assert groupname != null;
+//        assert groupname != null;
         reference = FirebaseDatabase.getInstance().getReference();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -124,25 +131,26 @@ public class ProjectGroupInfo extends AppCompatActivity {
 //                    joined.add(sn.getKey());
                     if(sn.getKey().equals("Groups")){
                         for(DataSnapshot tk: sn.child(groupname).child("Chats").getChildren()){
-                            Chat chat = tk.child("ChatInfo").getValue(Chat.class);
-                            if(chat!=null){
+                            Chat chat = tk.getValue(Chat.class);
+                            if(chat != null){
                                 chatList.add(chat);
                             }
                         }
                     }
                     if(sn.getKey().equals("Groups")){
                         for(DataSnapshot tk: sn.child(groupname).child("Moments").getChildren()){
-                            Moment moment = tk.child("MomentInfo").getValue(Moment.class);
-                            if(moment!=null){
+//                            Moment moment = tk.child("MomentInfo").getValue(Moment.class);
+                            Moment moment = tk.getValue(Moment.class);
+                            if(moment != null){
                                 momentList.add(moment);
                             }
                         }
                     }
                 }
                 //to restore the position before click
-//                chatRecyclerView.getLayoutManager().onRestoreInstanceState(chatRecyclerView.getLayoutManager().onSaveInstanceState());
-//                chatsAdapter = new EventsAdapter(context, mEvents, groupname, joined);
-//                chatRecyclerView.setAdapter(chatsAdapter);
+                chatRecyclerView.getLayoutManager().onRestoreInstanceState(chatRecyclerView.getLayoutManager().onSaveInstanceState());
+                chatListAdapter = new ChatListAdapter(context, chatList);
+                chatRecyclerView.setAdapter(chatListAdapter);
 
             }
 
@@ -152,24 +160,24 @@ public class ProjectGroupInfo extends AppCompatActivity {
 
             }
         });
-        // Set group name
-        this.groupNameTitle.setText(groupname);
-        // Retrieve an instance of database using reference the location
-        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname).child("GroupInfo");
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Get description of this group from database
-                String description = dataSnapshot.child("Description").getValue().toString();
-                // Set description
-                groupDescription.setText(description);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        // Set group name
+//        this.groupNameTitle.setText(groupname);
+//        // Retrieve an instance of database using reference the location
+//        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname);
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                // Get description of this group from database
+//                String description = dataSnapshot.child("Description").getValue().toString();
+//                // Set description
+//                groupDescription.setText(description);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
 }
