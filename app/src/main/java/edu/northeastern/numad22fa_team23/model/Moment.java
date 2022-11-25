@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Moment {
 
-    private int groupId;
+    private String groupId;
     private String userName;
     private int userId;
     private int momentId;
@@ -12,11 +12,11 @@ public class Moment {
     private String thought;
     private List<Comment> commentList;
 
-    public int getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
