@@ -141,7 +141,7 @@ public class ProjectGroupFragment extends Fragment {
 
             CircleImageView profileCircleImageView = groupGridView.findViewById(R.id.profileCircleImageView);
             String group_icon_x = "group_icon_" + (position%20+3)%20;
-            profileCircleImageView.setImageResource(getResources().getIdentifier(group_icon_x, "drawable", "com.myexample.privateeventconnection"));
+            profileCircleImageView.setImageResource(getResources().getIdentifier(group_icon_x, "drawable", "edu.northeastern.numad22fa_team23"));
             return groupGridView;
         }
     }
