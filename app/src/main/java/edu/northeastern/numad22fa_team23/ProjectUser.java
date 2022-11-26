@@ -9,9 +9,20 @@ public class ProjectUser {
         this.username = username;
     }
 
-    String username;
+    private String username;
 
-    public ProjectUser(String username) {
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    private String uid;
+
+    public ProjectUser(String username, String uid) {
+        this.uid = uid;
         this.username = username;
     }
 

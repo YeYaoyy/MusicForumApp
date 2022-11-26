@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +43,7 @@ public class ProjectGroupFragment extends Fragment {
     private int groupCount = 1;
     private Button addGroupButton;
     private ProjectGroupsViewModel mViewModel;
+    private String username;
 
     public static ProjectGroupFragment newInstance() {
         return new ProjectGroupFragment();
@@ -52,16 +57,49 @@ public class ProjectGroupFragment extends Fragment {
         addGroupButton = view.findViewById(R.id.addGroupbtn);
         groupNames = new ArrayList<>();
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser curUser = mAuth.getCurrentUser();
+        //？uid
+        final String uid = curUser.getUid();
+
         final GroupUIAdapter groupAdapter = new GroupUIAdapter();
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
-                // Passing the groupname to GroupInfoActivity,
-                // so that ProjectGroupInfo can display its corresponding information.
-                intent.putExtra("groupname", groupNames.get(position));
-                startActivity(intent);
+                mDatabase = FirebaseDatabase.getInstance().getReference().child("Project_Users");
+
+                mDatabase.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        }
+                        else {
+//                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
+                            for (String s : map.keySet()) {
+                                ProjectUser pu = (ProjectUser) map.get(s);
+                                String uid = pu.getUid();
+                                if (uid == curUser.getUid()) {
+                                    username = pu.getUsername();
+                                    break;
+                                }
+                            }
+                            Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+                            // Passing the groupname to GroupInfoActivity,
+                            // so that ProjectGroupInfo can display its corresponding information.
+                            Bundle b=new Bundle();
+                            b.putString("groupname", groupNames.get(position));
+                            b.putString("username", username);
+
+                            intent.putExtras(b);
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+
             }
         });
 
@@ -73,10 +111,7 @@ public class ProjectGroupFragment extends Fragment {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser curUser = mAuth.getCurrentUser();
-        //？uid
-        final String uid = curUser.getUid();
+
 
         // Retrieve an instance of database using reference the location
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Groups");

@@ -69,6 +69,18 @@
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".ChatActivity"
             android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupUI"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupOperation"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupInfo"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupChatMoment"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectAddUserToGroup"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectCreateGroup"
+            android:configChanges="orientation|screenSize"></activity>
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />

@@ -53,23 +53,24 @@ public class ChatActivity extends AppCompatActivity {
         send = findViewById(R.id.button_chatbox_send);
         context = this;
         mAuth = FirebaseAuth.getInstance();
-        Intent intent = getIntent();
-//        groupName = intent.getStringExtra("groupname");
-//        myname = intent.getStringExtra("myname");
-        groupName = "groupName";
-        myname = "qwe";
+        Intent i=getIntent();
+        Bundle data=i.getExtras();
+        groupName = data.getString("groupname");
+        myname = data.getString("username");
+//        groupName = "groupName";
+//        myname = "qwe";
 
         FirebaseUser user = mAuth.getCurrentUser();
-        String uid = "OfUlIQ1M42YjTg8iFplDJefLALX2";
-        String text = "h r u";
-        String time = "2022-11-21 21:12:13506";
-        Chat ch = new Chat(text, myname, time, uid);
-        List<Chat> l = new ArrayList<>();
-        l.add(ch);
+//        String uid = "OfUlIQ1M42YjTg8iFplDJefLALX2";
+//        String text = "h r u";
+//        String time = "2022-11-21 21:12:13506";
+//        Chat ch = new Chat(text, myname, time, uid);
+//        List<Chat> l = new ArrayList<>();
+//        l.add(ch);
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("Groups").child(groupName)
                 .child("Chats");
-        mDatabase.setValue(l);
+//        mDatabase.setValue(l);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
