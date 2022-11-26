@@ -4,6 +4,16 @@ public class Comment {
     private String userName;
     private String content;
 
+    public int getMomentId() {
+        return momentId;
+    }
+
+    public void setMomentId(int momentId) {
+        this.momentId = momentId;
+    }
+
+    private int momentId;
+
     public String getUserName() {
         return userName;
     }

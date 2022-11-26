@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="400dp">
 
     <TextView
         android:id="@+id/userName"
@@ -32,5 +32,22 @@
         android:textAlignment="viewStart"
         android:textSize="16sp"
         android:layout_marginLeft="60dp"/>
+
+    <Button
+        android:id="@+id/addComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thought"
+        android:layout_marginLeft="250dp"
+        android:text="add comment" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewComment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"
+        android:layout_below="@+id/addComment"
+        android:overScrollMode="never"
+        android:layout_marginLeft="30dp"/>
 
 </RelativeLayout>

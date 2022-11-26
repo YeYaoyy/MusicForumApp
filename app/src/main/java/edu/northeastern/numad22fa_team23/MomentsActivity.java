@@ -1,6 +1,5 @@
 package edu.northeastern.numad22fa_team23;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -24,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -32,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.northeastern.numad22fa_team23.model.Comment;
 import edu.northeastern.numad22fa_team23.model.Moment;
 
 public class MomentsActivity extends AppCompatActivity{
@@ -45,7 +44,7 @@ public class MomentsActivity extends AppCompatActivity{
     private String groupName;
     private String userName;
     FirebaseAuth auth;
-    private List<HashMap<String, String>> list;
+    private List<HashMap<String, Object>> list;
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
 
@@ -116,18 +115,20 @@ public class MomentsActivity extends AppCompatActivity{
                             Log.e("firebase", "moments add connection failed", task.getException());
                         }
                         else {
-                            list = (List<HashMap<String, String>>)task.getResult().getValue();
+                            list = (List<HashMap<String, Object>>)task.getResult().getValue();
 
                             List<Moment> newList = new ArrayList<>();
                             for (int i = 0; i < list.size(); i++) {
                                 Moment m = new Moment();
-                                m.setGroupId(list.get(i).get("groupId"));
-                                m.setMusicName(list.get(i).get("musicName"));
-                                m.setThought(list.get(i).get("thought"));
-                                m.setUserName(list.get(i).get("userName"));
+                                m.setGroupId((String) list.get(i).get("groupId"));
+                                m.setMusicName((String) list.get(i).get("musicName"));
+                                m.setThought((String) list.get(i).get("thought"));
+                                m.setUserName((String) list.get(i).get("userName"));
+                                m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
                                 newList.add(m);
                             }
                             Moment newMoment = new Moment();
+                            newMoment.setMomentId(newList.size());
                             newMoment.setGroupId(groupName);
                             newMoment.setMusicName(musicName.getText().toString());
                             newMoment.setThought(thought.getText().toString());
@@ -176,23 +177,119 @@ public class MomentsActivity extends AppCompatActivity{
                     Log.e("firebase", "moments connection failed", task.getException());
                 }
                 else {
-                    list = (List<HashMap<String, String>>)task.getResult().getValue();
+                    list = (List<HashMap<String, Object>>)task.getResult().getValue();
+                    //List<HashMap<String, Object>> comm;
                     List<Moment> newList = new ArrayList<>();
                     for (int i = 0; i < list.size(); i++) {
                         Moment m = new Moment();
-                        m.setGroupId(list.get(i).get("groupId"));
-                        m.setMusicName(list.get(i).get("musicName"));
-                        m.setThought(list.get(i).get("thought"));
-                        m.setUserName(list.get(i).get("userName"));
+                        m.setGroupId((String)list.get(i).get("groupId"));
+                        m.setMusicName((String)list.get(i).get("musicName"));
+                        m.setThought((String)list.get(i).get("thought"));
+                        m.setUserName((String)list.get(i).get("userName"));
+                        m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                        List<HashMap<String, Object>> comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
+                        if (comm == null) {
+                            comm = new ArrayList<>();
+                        }
+                        List<Comment> newComm = new ArrayList<>();
+                        for (int j = 0; j < comm.size(); j++) {
+                            Comment c = new Comment();
+                            c.setMomentId(((Long)comm.get(j).get("momentId")).intValue());
+                            c.setUserName((String) comm.get(j).get("userName"));
+                            c.setContent((String) comm.get(j).get("content"));
+                            newComm.add(c);
+                        }
+                        m.setCommentList(newComm);
                         newList.add(m);
                     }
                     recyclerView = (RecyclerView) findViewById(R.id.recyclerViewMoment);
                     adapter = new MomentsAdapter(newList, getApplication());
+                    adapter.setOnItemClickListener(new MomentsAdapter.OnItemClickListener() {
+                        @Override
+                        public void onButtonClicked(View view, int position, int momentId) {
+                            showAddCommentDialog(momentId);
+                            Toast.makeText(MomentsActivity.this, position + ":" + momentId, Toast.LENGTH_LONG).show();
+                        }
+                    });
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(MomentsActivity.this));
                 }
             }
         });
     }
+    private void showAddCommentDialog(int momentId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MomentsActivity.this);
+        final View dialogView = getLayoutInflater().inflate(R.layout.add_comment_dialog, null);
+        builder.setTitle("Add new comment");
+        builder.setView(dialogView);
+        Button addComment = (Button)dialogView.findViewById(R.id.button_addComment);
+        EditText comment = (EditText) dialogView.findViewById(R.id.commentContent);
+        AlertDialog alertDialog = builder.create();
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Editable test = comment.getText();
+                if ("".equals(comment.getText().toString())) {
+                    Toast.makeText(MomentsActivity.this, "Please fill EditText", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mDatabase.child("Groups").child(groupName).child("moments").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
 
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "comments add connection failed", task.getException());
+                        }
+                        else {
+                            list = (List<HashMap<String, Object>>)task.getResult().getValue();
+                            List<HashMap<String, Object>> comm;
+                            List<Moment> newList = new ArrayList<>();
+                            for (int i = 0; i < list.size(); i++) {
+                                Moment m = new Moment();
+                                m.setGroupId((String) list.get(i).get("groupId"));
+                                m.setMusicName((String) list.get(i).get("musicName"));
+                                m.setThought((String) list.get(i).get("thought"));
+                                m.setUserName((String) list.get(i).get("userName"));
+                                m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                                comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
+                                if (comm == null) {
+                                    comm = new ArrayList<>();
+                                }
+                                List<Comment> newComm = new ArrayList<>();
+                                for (int j = 0; j < comm.size(); j++) {
+                                    Comment c = new Comment();
+                                    c.setMomentId(((Long)comm.get(j).get("momentId")).intValue());
+                                    c.setUserName((String) comm.get(j).get("userName"));
+                                    c.setContent((String) comm.get(j).get("content"));
+                                    newComm.add(c);
+                                }
+                                if (m.getMomentId() == momentId) {
+                                    Comment c = new Comment();
+                                    c.setMomentId(momentId);
+                                    c.setUserName(userName);
+                                    c.setContent(comment.getText().toString());
+                                    newComm.add(c);
+                                }
+                                m.setCommentList(newComm);
+                                newList.add(m);
+                            }
+                            mDatabase.child("Groups").child(groupName).child("moments").setValue(newList);
+                            Toast.makeText(MomentsActivity.this, "Post New Comment successfully!", Toast.LENGTH_LONG).show();
+                            alertDialog.dismiss();
+                        }
+                    }
+                });
+                //getData();
+            }
+        });
+        Button cancelAddMoment = (Button)dialogView.findViewById(R.id.button_cancelAddComment);
+        cancelAddMoment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        builder.setCancelable(true);
+        alertDialog.show();
+    }
 }
