@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         if (theId == R.id.project) {
-            Intent intent = new Intent(this, MomentsActivity.class);
+            Intent intent = new Intent(this, ProjectMainActivity.class);
             startActivity(intent);
         }
     }

@@ -1,5 +1,6 @@
 package edu.northeastern.numad22fa_team23;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -73,8 +74,11 @@ public class ProjectSignup extends AppCompatActivity {
                                                     Toast.LENGTH_SHORT).show();
                                         } else {
                                             FirebaseUser user = mAuth.getCurrentUser();
-                                            ProjectUser pu = new ProjectUser(username.getText().toString());
+                                            ProjectUser pu = new ProjectUser(username.getText().toString(), user.getUid());
                                             mDatabase.child("Project_Users").child(username.getText().toString()).setValue(pu);
+
+                                            Intent intent = new Intent(ProjectSignup.this, ProjectGroupUI.class);
+                                            startActivity(intent);
                                         }
                                     }
                                 }

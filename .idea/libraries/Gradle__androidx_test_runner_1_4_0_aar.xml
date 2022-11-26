@@ -4,8 +4,14 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fb35c2c3a7d009dbae488d57e5275943/transformed/runner-1.4.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7ba08faad76fcc7c4fe4e625fe869063/transformed/runner-1.4.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/aa10b35bbe003a59dd28c53e280b8c80/transformed/runner-1.4.0/res" />
+<<<<<<< Updated upstream
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9251e27384dd1b0239a6af1b9adf74d6/transformed/runner-1.4.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9251e27384dd1b0239a6af1b9adf74d6/transformed/runner-1.4.0/jars/classes.jar!/" />
+=======
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1ebe8f197f6845f35179210f9b44386d/transformed/runner-1.4.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1ebe8f197f6845f35179210f9b44386d/transformed/runner-1.4.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1ebe8f197f6845f35179210f9b44386d/transformed/runner-1.4.0/res" />
+>>>>>>> Stashed changes
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test/runner/1.4.0/aee6a62a26d9b413dadc1732e66cc4ef3bcf9d61/runner-1.4.0-javadoc.jar!/" />

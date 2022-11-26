@@ -1,9 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.constraintlayout:constraintlayout:2.1.4@aar">
     <CLASSES>
+<<<<<<< Updated upstream
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/44c24a0ba9562c7bda90cd6278db8032/transformed/constraintlayout-2.1.4/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/44c24a0ba9562c7bda90cd6278db8032/transformed/constraintlayout-2.1.4/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/44c24a0ba9562c7bda90cd6278db8032/transformed/constraintlayout-2.1.4/res" />
+=======
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c536444d44b14e397ed760ab2199c331/transformed/constraintlayout-2.1.4/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/c536444d44b14e397ed760ab2199c331/transformed/constraintlayout-2.1.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c536444d44b14e397ed760ab2199c331/transformed/constraintlayout-2.1.4/AndroidManifest.xml" />
+>>>>>>> Stashed changes
     </CLASSES>
     <JAVADOC />
     <SOURCES>
