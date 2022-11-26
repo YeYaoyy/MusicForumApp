@@ -39,7 +39,7 @@ public class ProjectAddUserToGroup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_add_user_to_group);
+        setContentView(R.layout.activity_delete_user);
         myContext = ProjectAddUserToGroup.this;
 
         Bundle extras = getIntent().getExtras();
@@ -156,35 +156,35 @@ public class ProjectAddUserToGroup extends AppCompatActivity {
         final UserAdapter adapter = new UserAdapter(myContext, R.layout.manager_user_ui, userArray);
         final ListView listView = findViewById(R.id.admin_listView_delUser);
 
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                userArray.clear();
-//                for (DataSnapshot kv : dataSnapshot.getChildren()) {
-//                    if (operation) {
-//                        if (!kv.child("Groups").hasChild(groupName)) {
-//                            String email = kv.child("Email").getValue(String.class);
-//                            String name = kv.child("Name").getValue(String.class);
-//                            String uidDelete = kv.getKey();
-//                            userArray.add(new User(email, name, uidDelete));
-//                        }
-//                    } else {
-//                        if (kv.child("Groups").hasChild(groupName)) {
-//                            String email = kv.child("Email").getValue(String.class);
-//                            String name = kv.child("Name").getValue(String.class);
-//                            String uidDelete = kv.getKey();
-//                            userArray.add(new User(email, name, uidDelete));
-//                        }
-//
-//                    }
-//                }
-//                listView.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userArray.clear();
+                for (DataSnapshot kv : dataSnapshot.getChildren()) {
+                    if (operation) {
+                        if (!kv.child("Groups").hasChild(groupName)) {
+                            String email = kv.child("Email").getValue(String.class);
+                            String name = kv.child("Name").getValue(String.class);
+                            String uidDelete = kv.getKey();
+                            userArray.add(new User(email, name, uidDelete));
+                        }
+                    } else {
+                        if (kv.child("Groups").hasChild(groupName)) {
+                            String email = kv.child("Email").getValue(String.class);
+                            String name = kv.child("Name").getValue(String.class);
+                            String uidDelete = kv.getKey();
+                            userArray.add(new User(email, name, uidDelete));
+                        }
+
+                    }
+                }
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }

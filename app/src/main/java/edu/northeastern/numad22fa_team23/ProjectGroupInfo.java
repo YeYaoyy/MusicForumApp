@@ -110,17 +110,17 @@ public class ProjectGroupInfo extends AppCompatActivity {
             }
         });
 
-//        createChat.setOnClickListener((v) ->{
-////            Intent intent = new Intent();
-////            intent.putExtra("groupName", groupname);
-////            startActivity(intent);
-//        });
+        createChat.setOnClickListener((v) ->{
+//            Intent intent = new Intent();
+//            intent.putExtra("groupName", groupname);
+//            startActivity(intent);
+        });
 
-//        createMoment.setOnClickListener((v) ->{
-////            Intent intent = new Intent();
-////            intent.putExtra("groupName", groupname);
-////            startActivity(intent);
-//        });
+        createMoment.setOnClickListener((v) ->{
+//            Intent intent = new Intent();
+//            intent.putExtra("groupName", groupname);
+//            startActivity(intent);
+        });
 
 
 
@@ -174,24 +174,24 @@ public class ProjectGroupInfo extends AppCompatActivity {
 //        });
 
 
-        // Set group name
-        this.groupNameTitle.setText(groupname);
-        // Retrieve an instance of database using reference the location
-        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname);
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Get description of this group from database
-                String description = dataSnapshot.child("Description").getValue().toString();
-                // Set description
-                groupDescription.setText(description);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        // Set group name
+//        this.groupNameTitle.setText(groupname);
+//        // Retrieve an instance of database using reference the location
+//        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname);
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                // Get description of this group from database
+//                String description = dataSnapshot.child("Description").getValue().toString();
+//                // Set description
+//                groupDescription.setText(description);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
 }

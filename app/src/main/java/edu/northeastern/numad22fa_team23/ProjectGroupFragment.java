@@ -57,7 +57,7 @@ public class ProjectGroupFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ProjectGroupInfo.class);
+                Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
                 // Passing the groupname to GroupInfoActivity,
                 // so that ProjectGroupInfo can display its corresponding information.
                 intent.putExtra("groupname", groupNames.get(position));
