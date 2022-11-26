@@ -2,8 +2,6 @@
   <library name="Gradle: com.google.android.datatransport:transport-runtime:3.1.8@aar">
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cceb3e6729678765417b0315a538d114/transformed/transport-runtime-3.1.8/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/535fa59b8b776153abe482ef3bcbe59c/transformed/transport-runtime-3.1.8/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/535fa59b8b776153abe482ef3bcbe59c/transformed/transport-runtime-3.1.8/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/26043db19be81e2e5c8dd065f7357a3b/transformed/transport-runtime-3.1.8/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/26043db19be81e2e5c8dd065f7357a3b/transformed/transport-runtime-3.1.8/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/26043db19be81e2e5c8dd065f7357a3b/transformed/transport-runtime-3.1.8/AndroidManifest.xml" />

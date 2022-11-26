@@ -1,6 +1,5 @@
 package edu.northeastern.numad22fa_team23;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,21 +14,14 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import edu.northeastern.numad22fa_team23.model.Moment;
+import edu.northeastern.numad22fa_team23.model.ProjectMoment;
 
 public class ProjectGroupInfo extends AppCompatActivity {
     private TextView groupNameTitle;
@@ -43,7 +35,7 @@ public class ProjectGroupInfo extends AppCompatActivity {
     String uid;
     Set<String> joined;
     List<Chat> chatList;
-    List<Moment> momentList;
+    List<ProjectMoment> momentList;
     private DatabaseReference mDatabase;
     private DatabaseReference reference;
     Context context;
@@ -70,10 +62,10 @@ public class ProjectGroupInfo extends AppCompatActivity {
         final String groupname = intent.getStringExtra("groupname");
 
         chatList = new ArrayList<Chat>();
-        momentList = new ArrayList<Moment>();
+        momentList = new ArrayList<ProjectMoment>();
 
         chatList= (List<Chat>) getIntent().getExtras().get("Chats");
-        momentList = (List<Moment>) getIntent().getExtras().get("Moments");
+        momentList = (List<ProjectMoment>) getIntent().getExtras().get("Moments");
 
 
         //Fill chat and moment list

@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import edu.northeastern.numad22fa_team23.model.Comment;
+import edu.northeastern.numad22fa_team23.model.ProjectComment;
 
-public class MomentViewHolder extends RecyclerView.ViewHolder {
+public class ProjectMomentViewHolder extends RecyclerView.ViewHolder {
 
     TextView userName;
     TextView musicName;
@@ -21,22 +21,22 @@ public class MomentViewHolder extends RecyclerView.ViewHolder {
     Button addComment;
     int momentID;
     RecyclerView recyclerView;
-    CommentAdapter commentAdapter;
+    ProjectCommentAdapter commentAdapter;
     LinearLayoutManager linearLayoutManager;
 
-    public void showComment(List<Comment> commentList) {
-        commentAdapter.setData(commentList);
+    public void showComment(List<ProjectComment> projectCommentList) {
+        commentAdapter.setData(projectCommentList);
         recyclerView.setAdapter(commentAdapter);
     }
 
-    MomentViewHolder(Context context, View itemView, final MomentsAdapter.OnItemClickListener onClickListener) {
+    ProjectMomentViewHolder(Context context, View itemView, final ProjectMomentsAdapter.OnItemClickListener onClickListener) {
         super(itemView);
         userName = (TextView) itemView.findViewById(R.id.userName);
         musicName = (TextView) itemView.findViewById(R.id.musicName);
         thought = (TextView) itemView.findViewById(R.id.thought);
         addComment = (Button) itemView.findViewById(R.id.addComment);
         recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerViewComment);
-        commentAdapter = new CommentAdapter(context);
+        commentAdapter = new ProjectCommentAdapter(context);
         linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
 

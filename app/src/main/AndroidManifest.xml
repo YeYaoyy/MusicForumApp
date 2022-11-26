@@ -37,7 +37,17 @@
             </intent-filter>
         </service>
         -->
-        <activity android:name=".MomentsActivity"
+        <activity android:name=".ProjectGroupUI"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupOperation"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupInfo"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectGroupChatMoment"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectAddUserToGroup"
+            android:configChanges="orientation|screenSize"></activity>
+        <activity android:name=".ProjectMomentsActivity"
             android:configChanges="orientation|screenSize"></activity>
         <activity android:name=".StickItToEm"
             android:configChanges="orientation|screenSize"></activity>

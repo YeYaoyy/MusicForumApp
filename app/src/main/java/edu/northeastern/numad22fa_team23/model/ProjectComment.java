@@ -1,6 +1,6 @@
 package edu.northeastern.numad22fa_team23.model;
 
-public class Comment {
+public class ProjectComment {
     private String userName;
     private String content;
 

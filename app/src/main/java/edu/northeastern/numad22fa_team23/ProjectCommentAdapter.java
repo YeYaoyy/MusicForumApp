@@ -11,41 +11,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import edu.northeastern.numad22fa_team23.model.Comment;
+import edu.northeastern.numad22fa_team23.model.ProjectComment;
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
+public class ProjectCommentAdapter extends RecyclerView.Adapter<ProjectCommentAdapter.ViewHolder> {
 
-    private List<Comment> commentList;
+    private List<ProjectComment> projectCommentList;
     private Context context;
 
-    public CommentAdapter(Context context) {
+    public ProjectCommentAdapter(Context context) {
         this.context = context;
     }
 
-    public void setData(List<Comment> commentList) {
-        this.commentList = commentList;
+    public void setData(List<ProjectComment> projectCommentList) {
+        this.projectCommentList = projectCommentList;
     }
 
     @NonNull
     @Override
-    public CommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectCommentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recylcer_comment, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentAdapter.ViewHolder holder, int position) {
-        holder.userName.setText(commentList.get(position).getUserName());
-        holder.content.setText(commentList.get(position).getContent());
+    public void onBindViewHolder(@NonNull ProjectCommentAdapter.ViewHolder holder, int position) {
+        holder.userName.setText(projectCommentList.get(position).getUserName());
+        holder.content.setText(projectCommentList.get(position).getContent());
     }
 
     @Override
     public int getItemCount() {
-        if(commentList == null || commentList.size() == 0){
+        if(projectCommentList == null || projectCommentList.size() == 0){
             return 0;
         }else{
-            return commentList.size();
+            return projectCommentList.size();
         }
     }
 

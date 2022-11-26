@@ -2,7 +2,7 @@ package edu.northeastern.numad22fa_team23.model;
 
 import java.util.List;
 
-public class Moment {
+public class ProjectMoment {
 
     private String groupId;
     private String userName;
@@ -10,7 +10,7 @@ public class Moment {
     private int momentId;
     private String musicName;
     private String thought;
-    private List<Comment> commentList;
+    private List<ProjectComment> projectCommentList;
 
     public String getGroupId() {
         return groupId;
@@ -60,11 +60,11 @@ public class Moment {
         this.thought = thought;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public List<ProjectComment> getCommentList() {
+        return projectCommentList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
+    public void setCommentList(List<ProjectComment> projectCommentList) {
+        this.projectCommentList = projectCommentList;
     }
 }
