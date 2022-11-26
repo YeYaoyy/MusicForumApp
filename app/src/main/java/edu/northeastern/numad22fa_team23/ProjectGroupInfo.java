@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,6 +68,14 @@ public class ProjectGroupInfo extends AppCompatActivity {
         //Get the group name passed by GroupsUI
         Intent intent = getIntent();
         final String groupname = intent.getStringExtra("groupname");
+
+        chatList = new ArrayList<Chat>();
+        momentList = new ArrayList<Moment>();
+
+        chatList= (List<Chat>) getIntent().getExtras().get("Chats");
+        momentList = (List<Moment>) getIntent().getExtras().get("Moments");
+
+
         //Fill chat and moment list
         chatRecyclerView = findViewById(R.id.chatList);
         momentRecyclerView = findViewById(R.id.momentList);
@@ -82,6 +91,7 @@ public class ProjectGroupInfo extends AppCompatActivity {
         DividerItemDecoration mdividerItemDecoration = new DividerItemDecoration(momentRecyclerView.getContext(),
                 layoutManager.getOrientation());
         momentRecyclerView.addItemDecoration(mdividerItemDecoration);
+
 
         showMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,72 +122,76 @@ public class ProjectGroupInfo extends AppCompatActivity {
 ////            startActivity(intent);
 //        });
 
-        chatList = new ArrayList<Chat>();
-        momentList = new ArrayList<Moment>();
+
+
+
+
 //        assert groupname != null;
-        reference = FirebaseDatabase.getInstance().getReference();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                joined.clear();
-                chatList.clear();
-                momentList.clear();
-                for(DataSnapshot sn: snapshot.getChildren()){
-                    if(sn.getKey().equals("Users")){
-                        for(DataSnapshot tk: sn.child(uid).child("Groups").child(groupname).getChildren()){
-                            joined.add(tk.getKey());
-                        }
-                    }
-//                    joined.add(sn.getKey());
-                    if(sn.getKey().equals("Groups")){
-                        for(DataSnapshot tk: sn.child(groupname).child("Chats").getChildren()){
-                            Chat chat = tk.getValue(Chat.class);
-                            if(chat != null){
-                                chatList.add(chat);
-                            }
-                        }
-                    }
-                    if(sn.getKey().equals("Groups")){
-                        for(DataSnapshot tk: sn.child(groupname).child("Moments").getChildren()){
-//                            Moment moment = tk.child("MomentInfo").getValue(Moment.class);
-                            Moment moment = tk.getValue(Moment.class);
-                            if(moment != null){
-                                momentList.add(moment);
-                            }
-                        }
-                    }
-                }
-                //to restore the position before click
-                chatRecyclerView.getLayoutManager().onRestoreInstanceState(chatRecyclerView.getLayoutManager().onSaveInstanceState());
-                chatListAdapter = new ChatListAdapter(context, chatList);
-                chatRecyclerView.setAdapter(chatListAdapter);
-
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-//        // Set group name
-//        this.groupNameTitle.setText(groupname);
-//        // Retrieve an instance of database using reference the location
-//        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname);
-//        mDatabase.addValueEventListener(new ValueEventListener() {
+//        reference = FirebaseDatabase.getInstance().getReference();
+//        reference.addValueEventListener(new ValueEventListener() {
 //            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                // Get description of this group from database
-//                String description = dataSnapshot.child("Description").getValue().toString();
-//                // Set description
-//                groupDescription.setText(description);
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                joined.clear();
+//                chatList.clear();
+//                momentList.clear();
+//                for(DataSnapshot sn: snapshot.getChildren()){
+//                    if(sn.getKey().equals("Users")){
+//                        for(DataSnapshot tk: sn.child(uid).child("Groups").child(groupname).getChildren()){
+//                            joined.add(tk.getKey());
+//                        }
+//                    }
+////                    joined.add(sn.getKey());
+//                    if(sn.getKey().equals("Groups")){
+//                        for(DataSnapshot tk: sn.child(groupname).child("Chats").getChildren()){
+//                            Chat chat = tk.getValue(Chat.class);
+//                            if(chat != null){
+//                                chatList.add(chat);
+//                            }
+//                        }
+//                    }
+//                    if(sn.getKey().equals("Groups")){
+//                        for(DataSnapshot tk: sn.child(groupname).child("Moments").getChildren()){
+////                            Moment moment = tk.child("MomentInfo").getValue(Moment.class);
+//                            Moment moment = tk.getValue(Moment.class);
+//                            if(moment != null){
+//                                momentList.add(moment);
+//                            }
+//                        }
+//                    }
+//                }
+//                //to restore the position before click
+//                chatRecyclerView.getLayoutManager().onRestoreInstanceState(chatRecyclerView.getLayoutManager().onSaveInstanceState());
+//                chatListAdapter = new ChatListAdapter(context, chatList);
+//                chatRecyclerView.setAdapter(chatListAdapter);
+//
 //            }
 //
+//
 //            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            public void onCancelled(@NonNull DatabaseError error) {
 //
 //            }
 //        });
+
+
+        // Set group name
+        this.groupNameTitle.setText(groupname);
+        // Retrieve an instance of database using reference the location
+        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname);
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Get description of this group from database
+                String description = dataSnapshot.child("Description").getValue().toString();
+                // Set description
+                groupDescription.setText(description);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 }
