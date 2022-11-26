@@ -83,13 +83,13 @@ public class ProjectGroupOperation extends AppCompatActivity {
                     viewHolder = new ViewHolder();
                     viewHolder.groupName = view.findViewById(R.id.admin_textView_groupName_ui);
                     viewHolder.description = view.findViewById(R.id.admin_textView_groupDescription_ui);
-                    viewHolder.deleteGroupButton = view.findViewById(R.id.admin_delGroup_ui);
+//                    viewHolder.deleteGroupButton = view.findViewById(R.id.admin_delGroup_ui);
                     viewHolder.addUserButton = view.findViewById(R.id.admin_addUserInGroup_ui);
-                    viewHolder.removeUserButton = view.findViewById(R.id.admin_removeUserFromGroup_ui);
+//                    viewHolder.removeUserButton = view.findViewById(R.id.admin_removeUserFromGroup_ui);
 
                     // Default Group should never be operated.
                     if (groupArray.get(position).getGroupName().equals("DefaultGroup")) {
-                        viewHolder.deleteGroupButton.setVisibility(View.GONE);
+//                        viewHolder.deleteGroupButton.setVisibility(View.GONE);
                         viewHolder.addUserButton.setVisibility(View.GONE);
                         viewHolder.removeUserButton.setVisibility(View.GONE);
                     }
@@ -103,36 +103,36 @@ public class ProjectGroupOperation extends AppCompatActivity {
                 viewHolder.description.setText(group.getDescription());
 
                 // Delete group from database
-                viewHolder.deleteGroupButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final String groupName = groupArray.get(position).getGroupName();
-                        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot group : dataSnapshot.child("Groups").getChildren()) {
-                                    if (group.getKey().equals(groupName)) {
-                                        mDatabase.child("Groups").child(groupName).removeValue();
-                                        break;
-                                    }
-                                }
-
-                                for (DataSnapshot user : dataSnapshot.child("Users").getChildren()) {
-                                    for (DataSnapshot group : user.child("Groups").getChildren()) {
-                                        if (group.getKey().equals(groupName)) {
-                                            mDatabase.child("Users").child(user.getKey()).child("Groups").child(groupName).removeValue();
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                            }
-                        });
-                    }
-                });
+//                viewHolder.deleteGroupButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        final String groupName = groupArray.get(position).getGroupName();
+//                        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                for (DataSnapshot group : dataSnapshot.child("Groups").getChildren()) {
+//                                    if (group.getKey().equals(groupName)) {
+//                                        mDatabase.child("Groups").child(groupName).removeValue();
+//                                        break;
+//                                    }
+//                                }
+//
+//                                for (DataSnapshot user : dataSnapshot.child("Users").getChildren()) {
+//                                    for (DataSnapshot group : user.child("Groups").getChildren()) {
+//                                        if (group.getKey().equals(groupName)) {
+//                                            mDatabase.child("Users").child(user.getKey()).child("Groups").child(groupName).removeValue();
+//                                            break;
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                            }
+//                        });
+//                    }
+//                });
 
                 // Add user to the group
                 viewHolder.addUserButton.setOnClickListener(new View.OnClickListener() {
@@ -146,18 +146,18 @@ public class ProjectGroupOperation extends AppCompatActivity {
                     }
                 });
 
-                // Remove user from the group
-                viewHolder.removeUserButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String groupName = groupArray.get(position).getGroupName();
-                        // RemoveUserFromGroupActivity uses AddUserToGroupActivity
-                        Intent intent = new Intent(ProjectGroupOperation.this, ProjectAddUserToGroup.class);
-                        intent.putExtra("groupName", groupName);
-                        intent.putExtra("add", false);
-                        startActivity(intent);
-                    }
-                });
+//                // Remove user from the group
+//                viewHolder.removeUserButton.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String groupName = groupArray.get(position).getGroupName();
+//                        // RemoveUserFromGroupActivity uses AddUserToGroupActivity
+//                        Intent intent = new Intent(ProjectGroupOperation.this, ProjectAddUserToGroup.class);
+//                        intent.putExtra("groupName", groupName);
+//                        intent.putExtra("add", false);
+//                        startActivity(intent);
+//                    }
+//                });
                 return view;
             }
 

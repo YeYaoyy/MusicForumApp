@@ -114,7 +114,7 @@ public class ProjectGroupFragment extends Fragment {
 
 
         // Retrieve an instance of database using reference the location
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(uid).child("Groups");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
         //A ValueEventListener listens for data changes to a specific location in database
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override

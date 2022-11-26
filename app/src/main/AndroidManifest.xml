@@ -3,28 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="edu.northeastern.numad22fa_team23">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.READ_PRIVILEGE_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PRIVILEGE_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_team23"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NUMAD22Fa_Team23"
-        tools:targetApi="31"
-        android:usesCleartextTraffic="true">
-
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
         <!--
         <service
             android:name=".SendingMessage"
@@ -37,40 +37,58 @@
             </intent-filter>
         </service>
         -->
-        <activity android:name=".ProjectGroupUI"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectGroupOperation"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectGroupInfo"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectGroupChatMoment"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectAddUserToGroup"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectMomentsActivity"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".StickItToEm"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".AboutUs"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".AtYourService"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ActivityOuput"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".SendingMessage"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".RecievedHistoryActivity"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectLogin"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectMainActivity"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectSignup"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ChatActivity"
-            android:configChanges="orientation|screenSize"></activity>
-        <activity android:name=".ProjectCreateGroup"
-            android:configChanges="orientation|screenSize"></activity>
+        <activity
+            android:name=".ProjectGroupUI"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectGroupOperation"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectGroupInfo"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectGroupChatMoment"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectAddUserToGroup"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectMomentsActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".StickItToEm"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".AboutUs"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".AtYourService"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ActivityOuput"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".SendingMessage"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".RecievedHistoryActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectLogin"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectMainActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectSignup"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ChatActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ProjectCreateGroup"
+            android:configChanges="orientation|screenSize" />
+
         <meta-data
             android:name="android.webkit.WebView.EnableSafeBrowsing"
             android:value="false" />
@@ -88,17 +106,15 @@
         <receiver
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </receiver>
 
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="Team_23_Stick_It_To_Em_Notification" />
-
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
