@@ -28,20 +28,22 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_group_chat_moment);
 
-        Intent i=getIntent();
-        Bundle data=i.getExtras();
+        Intent i = getIntent();
+        Bundle data = i.getExtras();
         final String groupname = i.getStringExtra("groupname");
 
         groupDescription = findViewById(R.id.textView_groupDescription_ui);
 
+        //button to create a new chat in the group
         createChat = findViewById(R.id.createChatGBtn);
-        createMoment = findViewById(R.id.createMomentGBtn);
         createChat.setOnClickListener((v) ->{
             Intent intent = new Intent(this, ChatActivity.class);
             intent.putExtras(data);
             startActivity(intent);
         });
 
+        //button to create a new moment in the group
+        createMoment = findViewById(R.id.createMomentGBtn);
         createMoment.setOnClickListener((v) ->{
             Intent intent = new Intent(this, ProjectMomentsActivity.class);
             intent.putExtras(data);
@@ -49,7 +51,7 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         });
 
 
-
+        //get the description in database
         mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname).child("GroupInfo");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
