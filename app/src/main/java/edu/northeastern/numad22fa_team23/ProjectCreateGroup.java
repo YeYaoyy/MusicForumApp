@@ -29,6 +29,8 @@ public class ProjectCreateGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proj_create_group);
+
+        //button to create a new group
         createGroupBtn = findViewById(R.id.createGroup_button);
 
         //new group name Edit Text

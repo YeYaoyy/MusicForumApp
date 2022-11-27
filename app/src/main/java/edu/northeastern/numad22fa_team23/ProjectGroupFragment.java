@@ -53,7 +53,7 @@ public class ProjectGroupFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         //find this fragment
         View view = inflater.inflate(R.layout.activity_project_group_fragment, container, false);
-        //use a gridview to show all groups
+        //a gridview to show all groups
         gridView = view.findViewById(R.id.gridview);
         //button to add a new group
         addGroupButton = view.findViewById(R.id.addGroupbtn);
@@ -170,7 +170,9 @@ public class ProjectGroupFragment extends Fragment {
             TextView name = groupGridView.findViewById(R.id.groupname);
             //put group name in corresponding name
             name.setText(groupNames.get(position));
+            //circleImageView
             CircleImageView profileCircleImageView = groupGridView.findViewById(R.id.profileCircleImageView);
+            //group image
             String group_icon_x = "group_icon_" + (position%20+3)%20;
             profileCircleImageView.setImageResource(getResources().getIdentifier(group_icon_x, "drawable", "edu.northeastern.numad22fa_team23"));
             return groupGridView;
