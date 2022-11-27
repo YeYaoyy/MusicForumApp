@@ -42,7 +42,6 @@ public class ProjectGroupFragment extends Fragment {
     private ArrayList<String> groupNames;
     private int groupCount = 1;
     private Button addGroupButton;
-//    private ProjectGroupsViewModel mViewModel;
     private String username;
 
     public static ProjectGroupFragment newInstance() {
@@ -52,17 +51,22 @@ public class ProjectGroupFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        //find this fragment
         View view = inflater.inflate(R.layout.activity_project_group_fragment, container, false);
+        //use a gridview to show all groups
         gridView = view.findViewById(R.id.gridview);
+        //button to add a new group
         addGroupButton = view.findViewById(R.id.addGroupbtn);
+        //all added groups
         groupNames = new ArrayList<>();
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser curUser = mAuth.getCurrentUser();
-        //？uid
         final String uid = curUser.getUid();
 
+        //adapter
         final GroupUIAdapter groupAdapter = new GroupUIAdapter();
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -86,13 +90,13 @@ public class ProjectGroupFragment extends Fragment {
                                     break;
                                 }
                             }
-                            Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+
                             // Passing the groupname to ProjectGroupChatMoment,
                             // so that ProjectGroupChatMoment can display its corresponding information.
-                            Bundle b=new Bundle();
+                            Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+                            Bundle b = new Bundle();
                             b.putString("groupname", groupNames.get(position));
                             b.putString("username", username);
-
                             intent.putExtras(b);
                             startActivity(intent);
                         }
@@ -112,7 +116,6 @@ public class ProjectGroupFragment extends Fragment {
         });
 
 
-
         // Retrieve an instance of database using reference the location
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Groups");
         //A ValueEventListener listens for data changes to a specific location in database
@@ -123,14 +126,11 @@ public class ProjectGroupFragment extends Fragment {
                 groupCount = 1;
                 //add group names to the arraylist
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    //?? defaultgroup
                     if (!child.getKey().equals("DefaultGroup")) {
                         groupNames.add(child.getKey());
                     }
-//                    groupNames.add(child.getKey());
                 }
                 Collections.sort(groupNames);
-                //
                 gridView.setAdapter(groupAdapter);
             }
 
@@ -142,14 +142,7 @@ public class ProjectGroupFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-//        mViewModel = new ViewModelProvider(this).get(ProjectGroupsViewModel::class.java);
-        // TODO: Use the ViewModel
-
-    }
-
+    //set circleImageView for every group
     private class GroupUIAdapter extends BaseAdapter {
 
         @Override
@@ -173,7 +166,6 @@ public class ProjectGroupFragment extends Fragment {
             TextView name = groupGridView.findViewById(R.id.groupname);
             //put group name in corresponding name
             name.setText(groupNames.get(position));
-
             CircleImageView profileCircleImageView = groupGridView.findViewById(R.id.profileCircleImageView);
             String group_icon_x = "group_icon_" + (position%20+3)%20;
             profileCircleImageView.setImageResource(getResources().getIdentifier(group_icon_x, "drawable", "edu.northeastern.numad22fa_team23"));
