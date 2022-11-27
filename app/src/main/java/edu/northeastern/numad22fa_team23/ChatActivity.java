@@ -119,19 +119,22 @@ public class ChatActivity extends AppCompatActivity {
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot sn: snapshot.getChildren()){
-                    System.out.println(sn.getValue().getClass() );
-                    Chat msg = (Chat) sn.getValue(Chat.class);
-                    list.add(msg);
+                if (snapshot != null) {
+                    list.clear();
+                    for(DataSnapshot sn: snapshot.getChildren()){
+                        System.out.println(sn.getValue().getClass() );
+                        Chat msg = (Chat) sn.getValue(Chat.class);
+                        list.add(msg);
+                    }
+                    List<Chat> chats = (List<Chat>) snapshot.getValue();
+                    //System.out.println(snapshot.getValue().getClass().getClass());
+                    chatRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
+                    chatListAdapter = new ChatListAdapter(context, list);
+                    chatRecycler.setLayoutManager(new LinearLayoutManager(context));
+                    chatRecycler.setAdapter(chatListAdapter);
+                    // chatRecycler.scrollToPosition(chatList.size()-1);
                 }
-                List<Chat> chats = (List<Chat>) snapshot.getValue();
-                System.out.println(snapshot.getValue().getClass().getClass());
-                chatRecycler = (RecyclerView) findViewById(R.id.reyclerview_message_list);
-                chatListAdapter = new ChatListAdapter(context, list);
-                chatRecycler.setLayoutManager(new LinearLayoutManager(context));
-                chatRecycler.setAdapter(chatListAdapter);
-               // chatRecycler.scrollToPosition(chatList.size()-1);
+
             }
 
             @Override

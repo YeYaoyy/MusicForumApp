@@ -46,6 +46,7 @@ public class ProjectSignup extends AppCompatActivity {
     }
 
     private void signUp() {
+        //
         mDatabase.child("Project_Users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
