@@ -80,7 +80,10 @@ public class ProjectGroupFragment extends Fragment {
                             Log.e("firebase", "Error getting data", task.getException());
                         }
                         else {
+
 //                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+
+                            //get corresponding username from database to interact among different activities
                             HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
                             for (String s : map.keySet()) {
                                 HashMap<String, String> pu = (HashMap<String, String>) map.get(s);

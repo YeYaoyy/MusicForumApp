@@ -27,6 +27,7 @@ public class ProjectGroupUI extends AppCompatActivity {
         addGroupButton = findViewById(R.id.addGroupbtn);
         addGroupButton.setOnClickListener(v -> {add();});
 
+        //method to add the fragment to the corresponding activity(add ProjectGroupFragment to ProjectGroupUI)
         addDetailFragment(savedInstanceState);
 
     }
