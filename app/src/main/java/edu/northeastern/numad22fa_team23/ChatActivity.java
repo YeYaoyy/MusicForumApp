@@ -29,9 +29,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
+
+import edu.northeastern.numad22fa_team23.model.Chat;
 
 public class ChatActivity extends AppCompatActivity {
     List<Chat> chatList;

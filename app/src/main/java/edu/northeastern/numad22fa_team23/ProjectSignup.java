@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
+import edu.northeastern.numad22fa_team23.model.ProjectUser;
+
 public class ProjectSignup extends AppCompatActivity {
     private EditText email;
     private EditText password;

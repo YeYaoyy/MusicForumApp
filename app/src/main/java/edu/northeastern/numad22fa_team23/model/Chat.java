@@ -1,4 +1,4 @@
-package edu.northeastern.numad22fa_team23;
+package edu.northeastern.numad22fa_team23.model;
 
 public class Chat {
     public Chat(String content, String username, String time, String uid) {
