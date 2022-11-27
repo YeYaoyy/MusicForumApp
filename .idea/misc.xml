@@ -42,6 +42,7 @@
         <entry key="app/src/main/res/layout/manager_group_ui.xml" value="0.1" />
         <entry key="app/src/main/res/layout/manager_user_ui.xml" value="0.3565958658854167" />
         <entry key="app/src/main/res/layout/place_layout.xml" value="0.259375" />
+        <entry key="app/src/main/res/layout/recycler_moments.xml" value="0.2844635009765626" />
       </map>
     </option>
   </component>

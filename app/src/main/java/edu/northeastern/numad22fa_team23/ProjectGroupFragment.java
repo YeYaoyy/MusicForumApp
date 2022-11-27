@@ -79,16 +79,16 @@ public class ProjectGroupFragment extends Fragment {
 //                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
                             HashMap<String, Object> map = (HashMap<String, Object>) task.getResult().getValue();
                             for (String s : map.keySet()) {
-                                ProjectUser pu = (ProjectUser) map.get(s);
-                                String uid = pu.getUid();
-                                if (uid == curUser.getUid()) {
-                                    username = pu.getUsername();
+                                HashMap<String, String> pu = (HashMap<String, String>) map.get(s);
+                                String userid = pu.get("uid");
+                                if (userid == uid) {
+                                    username = pu.get("username");
                                     break;
                                 }
                             }
                             Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
-                            // Passing the groupname to GroupInfoActivity,
-                            // so that ProjectGroupInfo can display its corresponding information.
+                            // Passing the groupname to ProjectGroupChatMoment,
+                            // so that ProjectGroupChatMoment can display its corresponding information.
                             Bundle b=new Bundle();
                             b.putString("groupname", groupNames.get(position));
                             b.putString("username", username);

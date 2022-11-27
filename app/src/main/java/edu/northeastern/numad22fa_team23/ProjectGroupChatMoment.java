@@ -33,7 +33,7 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         });
 
         createMoment.setOnClickListener((v) ->{
-            Intent intent = new Intent(this, ProjectGroupUI.class);
+            Intent intent = new Intent(this, ProjectMomentsActivity.class);
             intent.putExtras(data);
             startActivity(intent);
         });
