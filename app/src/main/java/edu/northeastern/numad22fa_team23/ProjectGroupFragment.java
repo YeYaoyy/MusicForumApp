@@ -81,7 +81,7 @@ public class ProjectGroupFragment extends Fragment {
                             for (String s : map.keySet()) {
                                 HashMap<String, String> pu = (HashMap<String, String>) map.get(s);
                                 String userid = pu.get("uid");
-                                if (userid == uid) {
+                                if (userid.equals(uid)) {
                                     username = pu.get("username");
                                     break;
                                 }

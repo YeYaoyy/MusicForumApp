@@ -168,7 +168,7 @@ public class ProjectGroupInfo extends AppCompatActivity {
 
 //        // Set group name
 //        this.groupNameTitle.setText(groupname);
-//        // Retrieve an instance of database using reference the location
+        // Retrieve an instance of database using reference the location
 //        mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname);
 //        mDatabase.addValueEventListener(new ValueEventListener() {
 //            @Override
