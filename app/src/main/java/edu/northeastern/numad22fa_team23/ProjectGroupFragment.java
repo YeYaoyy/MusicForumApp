@@ -60,6 +60,7 @@ public class ProjectGroupFragment extends Fragment {
         //all added groups
         groupNames = new ArrayList<>();
 
+        //data
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser curUser = mAuth.getCurrentUser();
         final String uid = curUser.getUid();

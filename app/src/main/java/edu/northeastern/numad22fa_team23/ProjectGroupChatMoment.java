@@ -28,10 +28,12 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_group_chat_moment);
 
+        //data
         Intent i = getIntent();
         Bundle data = i.getExtras();
         final String groupname = i.getStringExtra("groupname");
 
+        //textview to show description of this group
         groupDescription = findViewById(R.id.textView_groupDescription_ui);
 
         //button to create a new chat in the group

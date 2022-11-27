@@ -30,9 +30,14 @@ public class ProjectCreateGroup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proj_create_group);
         createGroupBtn = findViewById(R.id.createGroup_button);
+
+        //new group name Edit Text
         addGroupEditText = findViewById(R.id.createGroup_editText);
+
+        //description of new group name Edit Text
         groupDescriptionEditText = findViewById(R.id.createGroupDescription_editText);
 
+        //data
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         uid = currentUser.getUid();
