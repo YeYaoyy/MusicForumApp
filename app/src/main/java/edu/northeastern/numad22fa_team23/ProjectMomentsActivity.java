@@ -1,5 +1,6 @@
 package edu.northeastern.numad22fa_team23;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -53,13 +54,13 @@ public class ProjectMomentsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments);
 
-//        Intent i = getIntent();
-//        Bundle bundle = i.getBundleExtra("bundle");
-//        userName = bundle.getString("userName");
-//        groupName = bundle.getString("groupName");
+        Intent i = getIntent();
+        Bundle data=i.getExtras();
+        userName = data.getString("username");
+        groupName = data.getString("groupname");
 
-        userName = "testUser1";
-        groupName = "testGroup1";
+//        userName = "testUser1";
+//        groupName = "testGroup1";
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -118,6 +119,9 @@ public class ProjectMomentsActivity extends AppCompatActivity{
                             list = (List<HashMap<String, Object>>)task.getResult().getValue();
 
                             List<ProjectMoment> newList = new ArrayList<>();
+                            if (list == null) {
+                                list = new ArrayList<>();
+                            }
                             for (int i = 0; i < list.size(); i++) {
                                 ProjectMoment m = new ProjectMoment();
                                 m.setGroupId((String) list.get(i).get("groupId"));
@@ -125,6 +129,19 @@ public class ProjectMomentsActivity extends AppCompatActivity{
                                 m.setThought((String) list.get(i).get("thought"));
                                 m.setUserName((String) list.get(i).get("userName"));
                                 m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                                List<HashMap<String, Object>> comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
+                                if (comm == null) {
+                                    comm = new ArrayList<>();
+                                }
+                                List<ProjectComment> newComm = new ArrayList<>();
+                                for (int j = 0; j < comm.size(); j++) {
+                                    ProjectComment c = new ProjectComment();
+                                    c.setMomentId(((Long)comm.get(j).get("momentId")).intValue());
+                                    c.setUserName((String) comm.get(j).get("userName"));
+                                    c.setContent((String) comm.get(j).get("content"));
+                                    newComm.add(c);
+                                }
+                                m.setCommentList(newComm);
                                 newList.add(m);
                             }
                             ProjectMoment newMoment = new ProjectMoment();
@@ -180,6 +197,9 @@ public class ProjectMomentsActivity extends AppCompatActivity{
                     list = (List<HashMap<String, Object>>)task.getResult().getValue();
                     //List<HashMap<String, Object>> comm;
                     List<ProjectMoment> newList = new ArrayList<>();
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
                     for (int i = 0; i < list.size(); i++) {
                         ProjectMoment m = new ProjectMoment();
                         m.setGroupId((String)list.get(i).get("groupId"));

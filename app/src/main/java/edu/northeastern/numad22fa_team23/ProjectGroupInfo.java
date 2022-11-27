@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import edu.northeastern.numad22fa_team23.model.Chat;
 import edu.northeastern.numad22fa_team23.model.ProjectMoment;
 
 public class ProjectGroupInfo extends AppCompatActivity {

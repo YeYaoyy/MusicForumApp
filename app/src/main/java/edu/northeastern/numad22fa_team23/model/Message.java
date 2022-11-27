@@ -1,4 +1,4 @@
-package edu.northeastern.numad22fa_team23;
+package edu.northeastern.numad22fa_team23.model;
 
 public class Message {
 
