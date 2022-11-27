@@ -26,7 +26,6 @@
         android:layout_marginTop="148dp"
         android:onClick="onClick"
         android:text="Create Moment"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
