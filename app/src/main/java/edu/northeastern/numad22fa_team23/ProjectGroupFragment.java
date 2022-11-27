@@ -42,7 +42,7 @@ public class ProjectGroupFragment extends Fragment {
     private ArrayList<String> groupNames;
     private int groupCount = 1;
     private Button addGroupButton;
-    private ProjectGroupsViewModel mViewModel;
+//    private ProjectGroupsViewModel mViewModel;
     private String username;
 
     public static ProjectGroupFragment newInstance() {

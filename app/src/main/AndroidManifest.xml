@@ -41,16 +41,7 @@
             android:name=".ProjectGroupUI"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".ProjectGroupOperation"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".ProjectGroupInfo"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name=".ProjectGroupChatMoment"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".ProjectAddUserToGroup"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".ProjectMomentsActivity"
