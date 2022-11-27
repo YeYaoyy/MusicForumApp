@@ -5,6 +5,8 @@ public class ProjectUser {
         return username;
     }
 
+    public void ProjectUser() {}
+
     public void setUsername(String username) {
         this.username = username;
     }
