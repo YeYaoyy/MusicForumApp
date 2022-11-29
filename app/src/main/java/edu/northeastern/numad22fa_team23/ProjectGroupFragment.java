@@ -106,15 +106,25 @@ public class ProjectGroupFragment extends Fragment {
                                     //If the user want to join the group, go to the group.
                                     .setPositiveButton("Yes",
                                             (dialog, id) -> {
-                                                mDatabase.child("Groups").child(groupNames.get(position)).child("GroupInfo").child("GroupUerName").setValue(username);
-                                                // Passing the groupname to ProjectGroupChatMoment,
-                                                // so that ProjectGroupChatMoment can display its corresponding information.
-                                                Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
-                                                Bundle b = new Bundle();
-                                                b.putString("groupname", groupNames.get(position));
-                                                b.putString("username", username);
-                                                intent.putExtras(b);
-                                                startActivity(intent);
+                                                //Avoid adding the username to dtatbase repeatedly.
+                                                if(mDatabase.child("Groups").child(groupNames.get(position)).child("GroupInfo").child("GroupUerName").equals(username)){
+                                                    Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+                                                    Bundle b = new Bundle();
+                                                    b.putString("groupname", groupNames.get(position));
+                                                    b.putString("username", username);
+                                                    intent.putExtras(b);
+                                                    startActivity(intent);
+                                                }else {
+                                                    mDatabase.child("Groups").child(groupNames.get(position)).child("GroupInfo").child("GroupUerName").setValue(username);
+                                                    // Passing the groupname to ProjectGroupChatMoment,
+                                                    // so that ProjectGroupChatMoment can display its corresponding information.
+                                                    Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+                                                    Bundle b = new Bundle();
+                                                    b.putString("groupname", groupNames.get(position));
+                                                    b.putString("username", username);
+                                                    intent.putExtras(b);
+                                                    startActivity(intent);
+                                                }
                                             })
                                     //If the user don't want to join the group, go back to group ui.
                                     .setNegativeButton("No", (dialog, id) -> dialog.cancel())
