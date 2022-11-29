@@ -23,6 +23,8 @@ public class ProjectMomentViewHolder extends RecyclerView.ViewHolder {
     RecyclerView recyclerView;
     ProjectCommentAdapter commentAdapter;
     LinearLayoutManager linearLayoutManager;
+    TextView location;
+    TextView weather;
 
     public void showComment(List<ProjectComment> projectCommentList) {
         commentAdapter.setData(projectCommentList);
@@ -35,6 +37,8 @@ public class ProjectMomentViewHolder extends RecyclerView.ViewHolder {
         musicName = (TextView) itemView.findViewById(R.id.musicName);
         thought = (TextView) itemView.findViewById(R.id.thought);
         addComment = (Button) itemView.findViewById(R.id.addComment);
+        location = (TextView) itemView.findViewById(R.id.location);
+        weather = (TextView) itemView.findViewById(R.id.weather);
         recyclerView = (RecyclerView) itemView.findViewById(R.id.recyclerViewComment);
         commentAdapter = new ProjectCommentAdapter(context);
         linearLayoutManager = new LinearLayoutManager(context);

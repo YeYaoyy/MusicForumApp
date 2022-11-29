@@ -33,13 +33,29 @@
         android:textSize="16sp"
         android:layout_marginLeft="60dp"/>
 
-    <Button
-        android:id="@+id/addComment"
+    <TextView
+        android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/thought"
-        android:layout_marginLeft="250dp"
-        android:text="add comment" />
+        android:layout_marginLeft="30dp"
+        android:text="location" />
+
+    <TextView
+        android:id="@+id/weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/location"
+        android:layout_marginLeft="30dp"
+        android:text="weather" />
+
+    <Button
+        android:id="@+id/addComment"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_below="@+id/weather"
+        android:layout_marginStart="250dp"
+        android:text="comment" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewComment"
