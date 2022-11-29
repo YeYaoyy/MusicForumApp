@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 
 import java.util.List;
+
+import edu.northeastern.numad22fa_team23.model.Chat;
 
 public class ChatListAdapter extends RecyclerView.Adapter {
     private Context mContext;

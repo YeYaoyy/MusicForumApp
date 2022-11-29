@@ -5,14 +5,11 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -52,11 +49,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 
 import edu.northeastern.numad22fa_team23.databinding.LayoutStickItToEmBinding;
+import edu.northeastern.numad22fa_team23.model.Message;
+import edu.northeastern.numad22fa_team23.model.User;
 
 public class SendingMessage extends AppCompatActivity {
 
