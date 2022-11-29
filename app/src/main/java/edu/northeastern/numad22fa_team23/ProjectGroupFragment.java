@@ -2,9 +2,11 @@ package edu.northeastern.numad22fa_team23;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,7 @@ public class ProjectGroupFragment extends Fragment {
     private int groupCount = 1;
     private Button addGroupButton;
     private String username;
+    private Context myContext;
 
     public static ProjectGroupFragment newInstance() {
         return new ProjectGroupFragment();
@@ -51,6 +54,7 @@ public class ProjectGroupFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        myContext = getContext();
         //find this fragment
         View view = inflater.inflate(R.layout.activity_project_group_fragment, container, false);
         //a gridview to show all groups
@@ -72,9 +76,10 @@ public class ProjectGroupFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mDatabase = FirebaseDatabase.getInstance().getReference().child("Project_Users");
+//                mDatabase = FirebaseDatabase.getInstance().getReference().child("Project_Users");
+                mDatabase = FirebaseDatabase.getInstance().getReference();
 
-                mDatabase.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                mDatabase.child("Project_Users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if (!task.isSuccessful()) {
@@ -95,19 +100,39 @@ public class ProjectGroupFragment extends Fragment {
                                 }
                             }
 
-                            // Passing the groupname to ProjectGroupChatMoment,
-                            // so that ProjectGroupChatMoment can display its corresponding information.
-                            Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
-                            Bundle b = new Bundle();
-                            b.putString("groupname", groupNames.get(position));
-                            b.putString("username", username);
-                            intent.putExtras(b);
-                            startActivity(intent);
+                            //A dialog to check if the user want to join the group
+                            AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+                            builder.setMessage("Do you want to join the group?")
+                                    //If the user want to join the group, go to the group.
+                                    .setPositiveButton("Yes",
+                                            (dialog, id) -> {
+                                                //Avoid adding the username to dtatbase repeatedly.
+                                                if(mDatabase.child("Groups").child(groupNames.get(position)).child("GroupInfo").child("GroupUerName").equals(username)){
+                                                    Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+                                                    Bundle b = new Bundle();
+                                                    b.putString("groupname", groupNames.get(position));
+                                                    b.putString("username", username);
+                                                    intent.putExtras(b);
+                                                    startActivity(intent);
+                                                }else {
+                                                    mDatabase.child("Groups").child(groupNames.get(position)).child("GroupInfo").child("GroupUerName").setValue(username);
+                                                    // Passing the groupname to ProjectGroupChatMoment,
+                                                    // so that ProjectGroupChatMoment can display its corresponding information.
+                                                    Intent intent = new Intent(getActivity(), ProjectGroupChatMoment.class);
+                                                    Bundle b = new Bundle();
+                                                    b.putString("groupname", groupNames.get(position));
+                                                    b.putString("username", username);
+                                                    intent.putExtras(b);
+                                                    startActivity(intent);
+                                                }
+                                            })
+                                    //If the user don't want to join the group, go back to group ui.
+                                    .setNegativeButton("No", (dialog, id) -> dialog.cancel())
+                                    .create();
+                            builder.show();
                         }
                     }
                 });
-
-
             }
         });
 

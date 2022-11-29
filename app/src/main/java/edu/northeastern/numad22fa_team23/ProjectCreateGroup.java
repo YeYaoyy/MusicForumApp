@@ -64,7 +64,7 @@ public class ProjectCreateGroup extends AppCompatActivity {
                 return;
             }
 
-            mDatabase.child("Group").addListenerForSingleValueEvent(new ValueEventListener(){
+            mDatabase.child("Groups").addListenerForSingleValueEvent(new ValueEventListener(){
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot group : snapshot.getChildren()) {

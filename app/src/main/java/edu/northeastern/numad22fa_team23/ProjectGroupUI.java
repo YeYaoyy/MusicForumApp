@@ -37,6 +37,7 @@ public class ProjectGroupUI extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //method to add the fragment to the corresponding activity(add ProjectGroupFragment to ProjectGroupUI)
     public void addDetailFragment(Bundle savedInstanceState){
         if(savedInstanceState == null){
             FragmentManager fm = getSupportFragmentManager();
