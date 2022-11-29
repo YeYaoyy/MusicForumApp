@@ -4,7 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,9 +38,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import edu.northeastern.numad22fa_team23.model.ProjectComment;
 import edu.northeastern.numad22fa_team23.model.ProjectMoment;
@@ -55,6 +62,9 @@ public class ProjectMomentsActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private List<HashMap<String, Object>> list;
     private boolean isLocationPermissionGranted = false;
+    LocationManager locationManager;
+    Location location;
+    String provider;
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
 
@@ -104,6 +114,19 @@ public class ProjectMomentsActivity extends AppCompatActivity {
             requestPermission();
             //return;
         }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        provider = LocationManager.NETWORK_PROVIDER;
+        locationManager.requestLocationUpdates(provider, 2000, 0, new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+
+            }
+        });
+
+        location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            //System.out.println(location.getLatitude() + " " + location.getLongitude());
+        }
     }
 
     private void showAddMomentDialog() {
@@ -143,6 +166,7 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                                 m.setThought((String) list.get(i).get("thought"));
                                 m.setUserName((String) list.get(i).get("userName"));
                                 m.setMomentId(((Long) list.get(i).get("momentId")).intValue());
+                                m.setLocation((String) list.get(i).get("location"));
                                 List<HashMap<String, Object>> comm = (List<HashMap<String, Object>>) list.get(i).get("commentList");
                                 if (comm == null) {
                                     comm = new ArrayList<>();
@@ -165,8 +189,6 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                             newMoment.setThought(thought.getText().toString());
                             newMoment.setUserName(userName);
                             //get location
-                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                            String provider = LocationManager.GPS_PROVIDER;
                             if (ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                                     != PackageManager.PERMISSION_GRANTED) {
@@ -174,11 +196,13 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                                 Toast.makeText(ProjectMomentsActivity.this, "Must permit sensor use!", Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            Location location = locationManager.getLastKnownLocation(provider);
-                            if (location != null) {
-                                System.out.println(location.getLatitude() + " " + location.getLongitude());
+                            location = locationManager.getLastKnownLocation(provider);
+                            if (location == null) {
+                                Toast.makeText(ProjectMomentsActivity.this, "Cannot get location!", Toast.LENGTH_LONG).show();
+                                return;
                             }
-                            //locationManager.requestLocationUpdates(provider, 2000, 0, locationListener);
+                            String add = getLocationAddress(location);
+                            newMoment.setLocation(add);
                             newList.add(newMoment);
                             mDatabase.child("Groups").child(groupName).child("moments").setValue(newList);
                             Toast.makeText(ProjectMomentsActivity.this, "Post New Moment successfully!", Toast.LENGTH_LONG).show();
@@ -199,6 +223,23 @@ public class ProjectMomentsActivity extends AppCompatActivity {
         builder.setCancelable(true);
         alertDialog.show();
     }
+
+    private String getLocationAddress(Location location) {
+        String addr = "";
+        Geocoder geocoder = new Geocoder(getBaseContext(), Locale.ENGLISH);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(),1);
+            Address address = addresses.get(0);
+            String newaddr = address.getAddressLine(0);
+            String[] newAddrArray = newaddr.split(",");
+            addr = newAddrArray[0] + "," + newAddrArray[1];
+        } catch (IOException e) {
+            addr = "";
+            e.printStackTrace();
+        }
+        return addr;
+    }
+
 
     private void requestPermission() {
         ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -267,6 +308,7 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                         m.setThought((String)list.get(i).get("thought"));
                         m.setUserName((String)list.get(i).get("userName"));
                         m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                        m.setLocation((String) list.get(i).get("location"));
                         List<HashMap<String, Object>> comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
                         if (comm == null) {
                             comm = new ArrayList<>();
@@ -331,6 +373,7 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                                 m.setThought((String) list.get(i).get("thought"));
                                 m.setUserName((String) list.get(i).get("userName"));
                                 m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                                m.setLocation((String) list.get(i).get("location"));
                                 comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
                                 if (comm == null) {
                                     comm = new ArrayList<>();

@@ -46,6 +46,8 @@ public class ProjectMomentsAdapter extends RecyclerView.Adapter<ProjectMomentVie
         viewHolder.musicName.setText(list.get(position).getMusicName());
         viewHolder.thought.setText(list.get(position).getThought());
         viewHolder.momentID = list.get(position).getMomentId();
+        viewHolder.location.setText(list.get(position).getLocation());
+        viewHolder.weather.setText(list.get(position).getWeather());
         viewHolder.showComment(list.get(position).getCommentList());
 
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
