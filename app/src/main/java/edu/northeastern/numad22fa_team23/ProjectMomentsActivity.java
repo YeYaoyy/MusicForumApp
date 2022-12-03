@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.HardwarePropertiesManager;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -42,9 +43,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONObject;
-
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +54,7 @@ import java.util.Locale;
 import edu.northeastern.numad22fa_team23.model.ProjectComment;
 import edu.northeastern.numad22fa_team23.model.ProjectMoment;
 
-public class ProjectMomentsActivity extends AppCompatActivity implements SensorEventListener {
+public class ProjectMomentsActivity extends AppCompatActivity {
 
     ProjectMomentsAdapter adapter;
     RecyclerView recyclerView;
@@ -72,6 +73,7 @@ public class ProjectMomentsActivity extends AppCompatActivity implements SensorE
     private SensorManager sensorManager;
     private Sensor temperature;
     private String nowTemp;
+    private HardwarePropertiesManager mHardwarePropertiesManager;
     public LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location locationN) {
@@ -97,14 +99,42 @@ public class ProjectMomentsActivity extends AppCompatActivity implements SensorE
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
 
+    public static float cpuTemperature()
+    {
+        Process process;
+        try {
+            process = Runtime.getRuntime().exec("cat sys/class/thermal/thermal_zone0/temp");
+            process.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = reader.readLine();
+            if(line!=null) {
+                float temp = Float.parseFloat(line);
+                return temp / 1000.0f;
+            }else{
+                return 51.0f;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        temperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        temperature = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        sensorManager.registerListener(mSensorEventListener, temperature, SensorManager.SENSOR_DELAY_NORMAL);
+//        Context context = getBaseContext();
+//        mHardwarePropertiesManager = (HardwarePropertiesManager) context.getSystemService(Context.HARDWARE_PROPERTIES_SERVICE);
+//        float[] temps = mHardwarePropertiesManager.getDeviceTemperatures(
+//                HardwarePropertiesManager.DEVICE_TEMPERATURE_SKIN,
+//                HardwarePropertiesManager.TEMPERATURE_CURRENT);
+//        nowTemp = String.valueOf(temps[1]);
 
+        nowTemp = String.valueOf(cpuTemperature()) + "°c";
         Intent i = getIntent();
         Bundle data = i.getExtras();
         userName = data.getString("username");
@@ -145,29 +175,36 @@ public class ProjectMomentsActivity extends AppCompatActivity implements SensorE
     }
 
     @Override
-    public final void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    @Override
-    public final void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
-            float nowTemperature = event.values[0];
-            nowTemp = nowTemperature + "°c";
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, temperature, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(mSensorEventListener, temperature, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
+        // Be sure to unregister the sensor when the activity pauses.
         super.onPause();
-        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(mSensorEventListener);
     }
+
+    private final SensorEventListener mSensorEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+                float nowTemperature = event.values[0];
+                nowTemp = nowTemperature + "°c";
+            }
+            if (event.sensor.getType() == Sensor.TYPE_PRESSURE) {
+                float nowTemperature = event.values[0];
+                nowTemp = nowTemperature + "hPa";
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
 
     private void initLocationPermission() {
         if (ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
