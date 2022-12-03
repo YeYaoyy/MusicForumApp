@@ -91,18 +91,22 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                 reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        //store the user in the same group in a list
                         userList = (List<String>) task.getResult().getValue();
+                        //if the group doesn't contain any user
                         if (userList == null) {
                             List<String> newList = new ArrayList<>();
                             newList.add(username);
                             reference.setValue(newList);
                             Toast.makeText(ProjectGroupChatMoment.this, "Congratulations! You have successfully joined this group!", Toast.LENGTH_LONG).show();
                         } else {
+                            //add the user to the group
                             if (!userList.contains(username)) {
                                 userList.add(username);
                                 reference.setValue(userList);
                                 Toast.makeText(ProjectGroupChatMoment.this, "Congratulations! You have successfully joined this group!", Toast.LENGTH_LONG).show();
                             } else {
+                                //If the user already joined the group
                                 Toast.makeText(ProjectGroupChatMoment.this, "You have already joined this group!", Toast.LENGTH_LONG).show();
                             }
                         }
