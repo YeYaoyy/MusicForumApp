@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ProjectGroupChatMoment">
 
+
     <Button
         android:id="@+id/createChatGBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="160dp"
         android:onClick="onClick"
         android:text="Create Chat"
         app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -23,7 +24,7 @@
         android:id="@+id/createMomentGBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="80dp"
         android:onClick="onClick"
         android:text="Create Moment"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +32,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createChatGBtn" />
 
+    <Button
+        android:id="@+id/join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:onClick="onClick"
+        android:text="Join this group"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createMomentGBtn" />
 
     <LinearLayout
         android:layout_width="match_parent"
