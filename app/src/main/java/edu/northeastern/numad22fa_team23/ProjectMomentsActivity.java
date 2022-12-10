@@ -4,9 +4,17 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.HardwarePropertiesManager;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -35,9 +43,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import edu.northeastern.numad22fa_team23.model.ProjectComment;
 import edu.northeastern.numad22fa_team23.model.ProjectMoment;
@@ -55,14 +67,74 @@ public class ProjectMomentsActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private List<HashMap<String, Object>> list;
     private boolean isLocationPermissionGranted = false;
+    LocationManager locationManager;
+    Location location;
+    String provider;
+    private SensorManager sensorManager;
+    private Sensor temperature;
+    private String nowTemp;
+    private HardwarePropertiesManager mHardwarePropertiesManager;
+    public LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location locationN) {
+            location = locationN;
+            //System.out.println("changed:" + location.getLatitude() + " " + location.getLongitude());
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Log.i("changed: ", "enabled");
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Log.i("changed: ", "disabled");
+        }
+    };
 
     private static String SERVER_KEY = "key=AAAAYVMPBrg:APA91bFcn3zDzceEIocqvzaKlPRBN1dKIdThGYeYK443c1A96HrITFGU8J3-VIj1u5ymAHbau-AsH3rpEsrUcN6E7FpCpz9XJjPGFuXDBx33-N_o-I2JLgepGt3qfMudTuCKGnWLKVy3";
+
+    public static float cpuTemperature()
+    {
+        Process process;
+        try {
+            process = Runtime.getRuntime().exec("cat sys/class/thermal/thermal_zone0/temp");
+            process.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = reader.readLine();
+            if(line!=null) {
+                float temp = Float.parseFloat(line);
+                return temp / 1000.0f;
+            }else{
+                return 51.0f;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moments);
 
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        temperature = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        sensorManager.registerListener(mSensorEventListener, temperature, SensorManager.SENSOR_DELAY_NORMAL);
+//        Context context = getBaseContext();
+//        mHardwarePropertiesManager = (HardwarePropertiesManager) context.getSystemService(Context.HARDWARE_PROPERTIES_SERVICE);
+//        float[] temps = mHardwarePropertiesManager.getDeviceTemperatures(
+//                HardwarePropertiesManager.DEVICE_TEMPERATURE_SKIN,
+//                HardwarePropertiesManager.TEMPERATURE_CURRENT);
+//        nowTemp = String.valueOf(temps[1]);
+
+        nowTemp = String.valueOf(cpuTemperature()) + "°c";
         Intent i = getIntent();
         Bundle data = i.getExtras();
         userName = data.getString("username");
@@ -84,6 +156,7 @@ public class ProjectMomentsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                initLocationPermission();
                 showAddMomentDialog();
             }
         });
@@ -98,13 +171,57 @@ public class ProjectMomentsActivity extends AppCompatActivity {
 
             }
         });
+        requestPermission();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(mSensorEventListener, temperature, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        // Be sure to unregister the sensor when the activity pauses.
+        super.onPause();
+        sensorManager.unregisterListener(mSensorEventListener);
+    }
+
+    private final SensorEventListener mSensorEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_AMBIENT_TEMPERATURE) {
+                float nowTemperature = event.values[0];
+                nowTemp = nowTemperature + "°c";
+            }
+            if (event.sensor.getType() == Sensor.TYPE_PRESSURE) {
+                float nowTemperature = event.values[0];
+                nowTemp = nowTemperature + "hPa";
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
+
+    private void initLocationPermission() {
         if (ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermission();
             //return;
         }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        provider = LocationManager.GPS_PROVIDER;
+        location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            System.out.println(getLocationAddress(location));
+        }
+        locationManager.requestLocationUpdates(provider, 2000, 0, locationListener);
     }
+
 
     private void showAddMomentDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProjectMomentsActivity.this);
@@ -143,6 +260,8 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                                 m.setThought((String) list.get(i).get("thought"));
                                 m.setUserName((String) list.get(i).get("userName"));
                                 m.setMomentId(((Long) list.get(i).get("momentId")).intValue());
+                                m.setLocation((String) list.get(i).get("location"));
+                                m.setWeather((String) list.get(i).get("weather"));
                                 List<HashMap<String, Object>> comm = (List<HashMap<String, Object>>) list.get(i).get("commentList");
                                 if (comm == null) {
                                     comm = new ArrayList<>();
@@ -165,8 +284,6 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                             newMoment.setThought(thought.getText().toString());
                             newMoment.setUserName(userName);
                             //get location
-                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                            String provider = LocationManager.GPS_PROVIDER;
                             if (ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ProjectMomentsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                                     != PackageManager.PERMISSION_GRANTED) {
@@ -174,11 +291,14 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                                 Toast.makeText(ProjectMomentsActivity.this, "Must permit sensor use!", Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            Location location = locationManager.getLastKnownLocation(provider);
-                            if (location != null) {
-                                System.out.println(location.getLatitude() + " " + location.getLongitude());
+                            //location = locationManager.getLastKnownLocation(provider);
+                            if (location == null) {
+                                Toast.makeText(ProjectMomentsActivity.this, "Cannot get location!", Toast.LENGTH_LONG).show();
+                                return;
                             }
-                            //locationManager.requestLocationUpdates(provider, 2000, 0, locationListener);
+                            String addr = getLocationAddress(location);
+                            newMoment.setLocation(addr);
+                            newMoment.setWeather(nowTemp);
                             newList.add(newMoment);
                             mDatabase.child("Groups").child(groupName).child("moments").setValue(newList);
                             Toast.makeText(ProjectMomentsActivity.this, "Post New Moment successfully!", Toast.LENGTH_LONG).show();
@@ -199,6 +319,23 @@ public class ProjectMomentsActivity extends AppCompatActivity {
         builder.setCancelable(true);
         alertDialog.show();
     }
+
+    private String getLocationAddress(Location location) {
+        String addr = "";
+        Geocoder geocoder = new Geocoder(getBaseContext(), Locale.ENGLISH);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(),1);
+            Address address = addresses.get(0);
+            String newaddr = address.getAddressLine(0);
+            String[] newAddrArray = newaddr.split(",");
+            addr = newAddrArray[0] + "," + newAddrArray[1];
+        } catch (IOException e) {
+            addr = "";
+            e.printStackTrace();
+        }
+        return addr;
+    }
+
 
     private void requestPermission() {
         ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -267,6 +404,8 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                         m.setThought((String)list.get(i).get("thought"));
                         m.setUserName((String)list.get(i).get("userName"));
                         m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                        m.setLocation((String) list.get(i).get("location"));
+                        m.setWeather((String) list.get(i).get("weather"));
                         List<HashMap<String, Object>> comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
                         if (comm == null) {
                             comm = new ArrayList<>();
@@ -331,6 +470,8 @@ public class ProjectMomentsActivity extends AppCompatActivity {
                                 m.setThought((String) list.get(i).get("thought"));
                                 m.setUserName((String) list.get(i).get("userName"));
                                 m.setMomentId(((Long)list.get(i).get("momentId")).intValue());
+                                m.setLocation((String) list.get(i).get("location"));
+                                m.setWeather((String) list.get(i).get("weather"));
                                 comm = (List<HashMap<String, Object>>)list.get(i).get("commentList");
                                 if (comm == null) {
                                     comm = new ArrayList<>();

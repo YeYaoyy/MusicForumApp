@@ -12,19 +12,20 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
 public class ProjectGroupUI extends AppCompatActivity {
-    private Button addGroupButton;
+    private FloatingActionButton addGroupButton;
     private ProjectGroupFragment groupFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_group_fragment);
-        addGroupButton = findViewById(R.id.addGroupbtn);
+        addGroupButton = findViewById(R.id.fab_addGroup);
         addGroupButton.setOnClickListener(v -> {add();});
 
         //method to add the fragment to the corresponding activity(add ProjectGroupFragment to ProjectGroupUI)

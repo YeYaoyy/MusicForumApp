@@ -12,6 +12,26 @@ public class ProjectMoment {
     private String thought;
     private List<ProjectComment> projectCommentList;
 
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
+
+    private String weather;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    private String location;
+
     public String getGroupId() {
         return groupId;
     }

@@ -7,39 +7,101 @@
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
         android:text="username"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="30dp"/>
+        android:textColor="#4CAF50"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/musicName"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/momentForm"
         android:layout_below="@+id/userName"
-        android:text="musicName"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textSize="20sp"
-        android:textStyle="italic" />
+        android:orientation="vertical"
+        android:layout_marginLeft="40dp">
 
-    <TextView
-        android:id="@+id/thought"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/musicName"
-        android:text="thought"
-        android:textAlignment="viewStart"
-        android:textSize="16sp"
-        android:layout_marginLeft="60dp"/>
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/note"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/newnote_" />
+
+            <TextView
+                android:id="@+id/musicName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="musicName"
+                android:textAllCaps="false"
+                android:textColor="#2196F3"
+                android:textSize="24sp"
+                android:textStyle="italic" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView />
+
+            <TextView
+                android:id="@+id/thought"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/musicNoteName"
+                android:text="thought"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                android:layout_marginLeft="15dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/locateImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/locate" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/locateImage"
+                android:text="location"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/weatherImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/temperature" />
+
+            <TextView
+                android:id="@+id/weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/weatherImage"
+                android:text="weather"
+                android:textSize="16sp" />
+        </TableRow>
+
+    </TableLayout>
 
     <Button
         android:id="@+id/addComment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/thought"
-        android:layout_marginLeft="250dp"
-        android:text="add comment" />
+        android:layout_height="48dp"
+        android:layout_below="@+id/momentForm"
+        android:layout_marginStart="250dp"
+        android:text="comment" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewComment"
