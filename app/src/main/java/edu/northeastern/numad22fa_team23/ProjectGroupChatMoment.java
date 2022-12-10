@@ -78,18 +78,19 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                         if (snapshot == null) {
                             Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
                             return;
-                        } else if (snapshot.getValue().equals(username)) {
-                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
-                            intent.putExtras(data);
-                            startActivity(intent);
-                            return;
                         }
-                        userList = (List<String>) snapshot.getValue();
+                        try {
+                            userList = (List<String>) snapshot.getValue();
+                        } catch (ClassCastException e) {
+                            userList = new ArrayList<>();
+                            userList.add((String) snapshot.getValue());
+                        }
+
                         //if the group doesn't contain any user
                         if (!userList.contains(username)) {
                             Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
                         } else {
-                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
+                            Intent intent = new Intent(ProjectGroupChatMoment.this, ChatActivity.class);
                             intent.putExtras(data);
                             startActivity(intent);
                         }
@@ -122,13 +123,13 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                         if (snapshot == null) {
                             Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
                             return;
-                        } else if (snapshot.getValue().equals(username)) {
-                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
-                            intent.putExtras(data);
-                            startActivity(intent);
-                            return;
                         }
-                        userList = (List<String>) snapshot.getValue();
+                        try {
+                            userList = (List<String>) snapshot.getValue();
+                        } catch (ClassCastException e) {
+                            userList = new ArrayList<>();
+                            userList.add((String) snapshot.getValue());
+                        }
                         //if the group doesn't contain any user
                         if (!userList.contains(username)) {
                             Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
@@ -154,8 +155,13 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                 reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        try {
+                            userList = (List<String>) task.getResult().getValue();
+                        } catch (ClassCastException e) {
+                            userList = new ArrayList<>();
+                            userList.add((String) task.getResult().getValue());
+                        }
                         //store the user in the same group in a list
-                        userList = (List<String>) task.getResult().getValue();
                         //if the group doesn't contain any user
                         if (userList == null) {
                             List<String> newList = new ArrayList<>();

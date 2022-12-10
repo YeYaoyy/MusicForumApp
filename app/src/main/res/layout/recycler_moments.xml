@@ -24,10 +24,11 @@
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/note"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:src="@drawable/newnote_" />
 
             <TextView
@@ -35,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="musicName"
+                android:layout_marginLeft="20dp"
                 android:textAllCaps="false"
                 android:textColor="#2196F3"
                 android:textSize="24sp"
@@ -98,9 +100,10 @@
     <Button
         android:id="@+id/addComment"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="35dp"
         android:layout_below="@+id/momentForm"
         android:layout_marginStart="250dp"
+        android:backgroundTint="#D2C5DA"
         android:text="comment" />
 
     <androidx.recyclerview.widget.RecyclerView

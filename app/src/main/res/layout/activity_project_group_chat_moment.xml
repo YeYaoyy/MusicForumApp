@@ -8,50 +8,52 @@
 
     <Button
         android:id="@+id/createChatGBtn"
-        android:layout_marginTop="128dp"
-        android:layout_width="98dp"
-        android:layout_height="59dp"
+        android:layout_width="110dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="16dp"
         android:backgroundTint="#D2C5DA"
         android:onClick="onClick"
+
         android:text="Create Chat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/join"
-        app:layout_constraintHorizontal_bias="0.326"
+        app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49"
+        app:layout_constraintVertical_bias="0.487"
         tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/createMomentGBtn"
-        android:layout_marginTop="148dp"
-        android:layout_width="106dp"
-        android:layout_height="59dp"
+        android:layout_width="110dp"
+        android:layout_height="62dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#D2C5DA"
         android:onClick="onClick"
+
         android:text="Create Moment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/join"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toEndOf="@id/join"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.488"
+        app:layout_constraintVertical_bias="0.486"
         tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/join"
-        android:layout_width="116dp"
-        android:layout_height="58dp"
+        android:layout_width="110dp"
+        android:layout_height="62dp"
         android:backgroundTint="#D2C5DA"
         android:onClick="onClick"
         android:text="Join this group"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.491"
+        app:layout_constraintVertical_bias="0.486"
         tools:ignore="OnClick" />
 
     <LinearLayout
