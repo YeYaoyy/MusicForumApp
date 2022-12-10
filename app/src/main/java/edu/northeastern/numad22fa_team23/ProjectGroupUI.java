@@ -27,6 +27,7 @@ public class ProjectGroupUI extends AppCompatActivity {
         addGroupButton = findViewById(R.id.addGroupbtn);
         addGroupButton.setOnClickListener(v -> {add();});
 
+        //method to add the fragment to the corresponding activity(add ProjectGroupFragment to ProjectGroupUI)
         addDetailFragment(savedInstanceState);
 
     }
@@ -36,6 +37,7 @@ public class ProjectGroupUI extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //method to add the fragment to the corresponding activity(add ProjectGroupFragment to ProjectGroupUI)
     public void addDetailFragment(Bundle savedInstanceState){
         if(savedInstanceState == null){
             FragmentManager fm = getSupportFragmentManager();
@@ -53,14 +55,4 @@ public class ProjectGroupUI extends AppCompatActivity {
             ft.commit();
         }
     }
-
-//    private void loadFragment(Fragment fragment) {
-//// create a FragmentManager
-//        FragmentManager fm = getFragmentManager();
-//// create a FragmentTransaction to begin the transaction and replace the Fragment
-//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//// replace the FrameLayout with new Fragment
-//        fragmentTransaction.replace(R.id.fragment, fragment);
-//        fragmentTransaction.commit(); // save the changes
-//    }
 }

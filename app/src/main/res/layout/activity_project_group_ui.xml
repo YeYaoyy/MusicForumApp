@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ProjectGroupUI">
 
-<!--    <fragment-->
-<!--        android:id="@+id/fragment"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:layout="@layout/activity_project_group_fragment" />-->
-
     <FrameLayout
         android:id="@+id/fragment"
         xmlns:android="http://schemas.android.com/apk/res/android"
