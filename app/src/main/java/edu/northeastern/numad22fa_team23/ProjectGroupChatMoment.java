@@ -3,16 +3,11 @@ package edu.northeastern.numad22fa_team23;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,8 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.List;
 
+import edu.northeastern.numad22fa_team23.model.Chat;
 import edu.northeastern.numad22fa_team23.model.ProjectComment;
 import edu.northeastern.numad22fa_team23.model.ProjectMoment;
 import edu.northeastern.numad22fa_team23.model.ProjectUser;
@@ -50,41 +47,107 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
     private List<String> userList;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_group_chat_moment);
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        uid = currentUser.getUid();
+
         //data
         Intent i = getIntent();
         Bundle data = i.getExtras();
         final String groupname = i.getStringExtra("groupname");
+
         final String username = i.getStringExtra("username");
+        reference = FirebaseDatabase.getInstance().getReference("Groups").child(groupname).child("GroupInfo").child("GroupUserName");
+
 
         //textview to show description of this group
         groupDescription = findViewById(R.id.textView_groupDescription_ui);
 
         //button to create a new chat in the group
         createChat = findViewById(R.id.createChatGBtn);
-        createChat.setOnClickListener((v) -> {
-            Intent intent = new Intent(this, ChatActivity.class);
-            intent.putExtras(data);
-            startActivity(intent);
+
+
+        createChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot == null) {
+                            Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                            return;
+                        } else if (snapshot.getValue().equals(username)) {
+                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
+                            intent.putExtras(data);
+                            startActivity(intent);
+                            return;
+                        }
+                        userList = (List<String>) snapshot.getValue();
+                        //if the group doesn't contain any user
+                        if (!userList.contains(username)) {
+                            Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                        } else {
+                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
+                            intent.putExtras(data);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
         });
 
         //button to create a new moment in the group
         createMoment = findViewById(R.id.createMomentGBtn);
-        createMoment.setOnClickListener((v) -> {
+
+        createMoment.setOnClickListener((v) ->{
             Intent intent = new Intent(this, ProjectMomentsActivity.class);
             intent.putExtras(data);
             startActivity(intent);
         });
 
+
+        createMoment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot == null) {
+                            Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                            return;
+                        } else if (snapshot.getValue().equals(username)) {
+                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
+                            intent.putExtras(data);
+                            startActivity(intent);
+                            return;
+                        }
+                        userList = (List<String>) snapshot.getValue();
+                        //if the group doesn't contain any user
+                        if (!userList.contains(username)) {
+                            Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                        } else {
+                            Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
+                            intent.putExtras(data);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
         //button to join this group
         joinGroup = findViewById(R.id.join);
-        reference = FirebaseDatabase.getInstance().getReference("Groups").child(groupname).child("GroupInfo").child("GroupUserName");
         joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,6 +177,7 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                 });
             }
         });
+
 
         //get the description in database
         mDatabase = FirebaseDatabase.getInstance().getReference("Groups").child(groupname).child("GroupInfo");

@@ -123,7 +123,7 @@ public class ChatActivity extends AppCompatActivity {
                 if (snapshot != null) {
                     list.clear();
                     for(DataSnapshot sn: snapshot.getChildren()){
-                        System.out.println(sn.getValue().getClass() );
+                        //System.out.println(sn.getValue().getClass() );
                         Chat msg = (Chat) sn.getValue(Chat.class);
                         list.add(msg);
                     }

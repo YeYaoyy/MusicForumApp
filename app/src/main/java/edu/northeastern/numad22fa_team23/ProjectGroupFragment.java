@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +42,7 @@ public class ProjectGroupFragment extends Fragment {
     private GridView gridView;
     private ArrayList<String> groupNames;
     private int groupCount = 1;
-    private Button addGroupButton;
+    private FloatingActionButton addGroupButton;
     private String username;
 
     public static ProjectGroupFragment newInstance() {
@@ -56,7 +57,7 @@ public class ProjectGroupFragment extends Fragment {
         //a gridview to show all groups
         gridView = view.findViewById(R.id.gridview);
         //button to add a new group
-        addGroupButton = view.findViewById(R.id.addGroupbtn);
+        addGroupButton = view.findViewById(R.id.fab_addGroup);
         //all added groups
         groupNames = new ArrayList<>();
 
