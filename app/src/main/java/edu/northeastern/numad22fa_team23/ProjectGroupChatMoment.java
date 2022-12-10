@@ -86,6 +86,11 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                             userList.add((String) snapshot.getValue());
                         }
 
+                        if (userList == null) {
+                            Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         //if the group doesn't contain any user
                         if (!userList.contains(username)) {
                             Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
@@ -129,6 +134,11 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
                         } catch (ClassCastException e) {
                             userList = new ArrayList<>();
                             userList.add((String) snapshot.getValue());
+                        }
+
+                        if (userList == null) {
+                            Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                            return;
                         }
                         //if the group doesn't contain any user
                         if (!userList.contains(username)) {
