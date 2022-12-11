@@ -68,15 +68,52 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         //button to create a new chat in the group
         createChat = findViewById(R.id.createChatGBtn);
 
+        ValueEventListener v = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) {
+                    Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+
+                    return;
+                }
+                try {
+                    userList = (List<String>) snapshot.getValue();
+                } catch (ClassCastException e) {
+                    userList = new ArrayList<>();
+                    userList.add((String) snapshot.getValue());
+                }
+
+                if (userList == null) {
+                    Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                //if the group doesn't contain any user
+                if (!userList.contains(username)) {
+                    Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(ProjectGroupChatMoment.this, ChatActivity.class);
+                    intent.putExtras(data);
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
 
         createChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reference.addValueEventListener(v);
+                /*
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot == null) {
                             Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+
                             return;
                         }
                         try {
@@ -105,6 +142,8 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
 
                     }
                 });
+
+                 */
             }
 
         });
@@ -112,16 +151,44 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         //button to create a new moment in the group
         createMoment = findViewById(R.id.createMomentGBtn);
 
-        createMoment.setOnClickListener((v) ->{
-            Intent intent = new Intent(this, ProjectMomentsActivity.class);
-            intent.putExtras(data);
-            startActivity(intent);
-        });
+        ValueEventListener m = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot == null) {
+                    Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                try {
+                    userList = (List<String>) snapshot.getValue();
+                } catch (ClassCastException e) {
+                    userList = new ArrayList<>();
+                    userList.add((String) snapshot.getValue());
+                }
 
+                if (userList == null) {
+                    Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                //if the group doesn't contain any user
+                if (!userList.contains(username)) {
+                    Toast.makeText(ProjectGroupChatMoment.this, "You haven't joined this group", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(ProjectGroupChatMoment.this, ProjectMomentsActivity.class);
+                    intent.putExtras(data);
+                    startActivity(intent);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
 
         createMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reference.addValueEventListener(m);
+                /*
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -154,6 +221,8 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
 
                     }
                 });
+
+                 */
             }
         });
 
@@ -162,6 +231,8 @@ public class ProjectGroupChatMoment extends AppCompatActivity {
         joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reference.removeEventListener(v);
+                reference.removeEventListener(m);
                 reference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {

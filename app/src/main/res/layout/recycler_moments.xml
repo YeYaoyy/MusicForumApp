@@ -203,6 +203,6 @@
         android:layout_below="@+id/recyclerViewComment"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#303F9F"/>
+        android:background="#77777A" />
 
 </RelativeLayout>
