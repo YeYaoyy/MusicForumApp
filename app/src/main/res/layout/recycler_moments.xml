@@ -22,7 +22,9 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/profilePhoto"
         android:text="username"
-        android:textColor="#FF82AB" />
+        android:textColor="#EF5489"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/note"
@@ -37,10 +39,12 @@
         android:id="@+id/musicName"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="musicName"
         android:layout_below="@+id/userName"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/note" />
+        android:layout_toRightOf="@+id/note"
+        android:text="musicName"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/thought"
@@ -51,7 +55,7 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/profilePhoto"
         android:minLines="3"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="30dp"/>
 
     <ImageView
         android:id="@+id/locateImage"
@@ -69,7 +73,9 @@
         android:layout_toRightOf="@+id/locateImage"
         android:text="location"
         android:layout_below="@+id/thought"
-        android:layout_marginTop="3dp" />
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#EF5489"/>
 
     <ImageView
         android:id="@+id/weatherImage"
@@ -87,7 +93,9 @@
         android:layout_toRightOf="@+id/weatherImage"
         android:text="weather"
         android:layout_below="@+id/locateImage"
-        android:layout_marginTop="3dp" />
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="#EF5489"/>
 
 
 

@@ -4,23 +4,28 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/commentUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/commentUserName"
-        android:text="commentUserName"/>
+        android:text="commentUserName"
+        android:textColor="#EF5489"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/colon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/commentUserName"
         android:text=": "
-        android:id="@+id/colon"/>
+        android:textColor="#EF5489"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/comment"
         android:layout_toEndOf="@+id/colon"
-        android:text="comment content"/>
+        android:text="comment content"
+        android:textColor="#535252" />
 
 </RelativeLayout>
