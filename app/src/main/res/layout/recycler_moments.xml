@@ -1,18 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="400dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/profilePhoto"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/profile" />
 
     <TextView
         android:id="@+id/userName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/profilePhoto"
         android:text="username"
-        android:textColor="#4CAF50"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textColor="#FF82AB" />
 
+    <ImageView
+        android:id="@+id/note"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/disc"
+        android:layout_below="@+id/userName"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/profilePhoto"/>
+
+    <TextView
+        android:id="@+id/musicName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="musicName"
+        android:layout_below="@+id/userName"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/note" />
+
+    <TextView
+        android:id="@+id/thought"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/musicName"
+        android:text="thought"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/profilePhoto"
+        android:minLines="3"
+        android:layout_marginLeft="20dp"/>
+
+    <ImageView
+        android:id="@+id/locateImage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/thought"
+        android:src="@drawable/loca"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/profilePhoto" />
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/locateImage"
+        android:text="location"
+        android:layout_below="@+id/thought"
+        android:layout_marginTop="3dp" />
+
+    <ImageView
+        android:id="@+id/weatherImage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/locateImage"
+        android:src="@drawable/weather"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/profilePhoto"/>
+
+    <TextView
+        android:id="@+id/weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/weatherImage"
+        android:text="weather"
+        android:layout_below="@+id/locateImage"
+        android:layout_marginTop="3dp" />
+
+
+
+<!--
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -97,11 +176,13 @@
 
     </TableLayout>
 
+    -->
+
     <Button
         android:id="@+id/addComment"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_below="@+id/momentForm"
+        android:layout_below="@+id/weatherImage"
         android:layout_marginStart="250dp"
         android:backgroundTint="#D2C5DA"
         android:text="comment" />
@@ -113,6 +194,15 @@
         android:nestedScrollingEnabled="false"
         android:layout_below="@+id/addComment"
         android:overScrollMode="never"
-        android:layout_marginLeft="30dp"/>
+        android:layout_toRightOf="@+id/profilePhoto"/>
+
+    <View
+        android:id="@+id/underscore"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/recyclerViewComment"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#303F9F"/>
 
 </RelativeLayout>
