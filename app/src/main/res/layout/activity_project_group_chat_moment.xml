@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/join"
-        android:layout_width="110dp"
+        android:layout_width="120dp"
         android:layout_height="62dp"
         android:backgroundTint="#D2C5DA"
         android:onClick="onClick"
