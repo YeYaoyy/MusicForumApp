@@ -1,5 +1,5 @@
 # *all codes are written by ourselves!!!!*
-This is forked from the original private repo. The original project code we implemented ourselves was required to remain private in the University GitHub organization.
+This is forked from the original private repo [NUMAD22Fa_Team23](https://github.com/ZhuofanWang/NUMAD22Fa_Team23). The original project code we implemented ourselves was required to remain private in the University GitHub organization.
 
 # MusicForumApp
 
