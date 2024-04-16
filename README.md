@@ -1,3 +1,6 @@
+# *all codes are written by ourselves!!!!*
+This is forked from the original private repo. The original project code we implemented ourselves was required to remain private in the University GitHub organization.
+
 # MusicForumApp
 
 A app for music forum.
